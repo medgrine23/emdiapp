@@ -274,6 +274,7 @@ export interface Facture extends EntiteProjet {
   date: Horodatage;
   dateEcheance?: Horodatage;
   statut: StatutFacture;
+  tauxTVA: number; // %
   totalHT: number;
   totalTVA: number;
   totalTTC: number;

@@ -21,6 +21,8 @@ export default function ModulesLayout() {
       <Stack.Screen name="planning/index" options={{ title: 'Planning' }} />
       <Stack.Screen name="achats/index" options={{ title: 'Achats' }} />
       <Stack.Screen name="facturation/index" options={{ title: 'Facturation' }} />
+      <Stack.Screen name="facturation/[id]" options={{ title: 'Facture' }} />
+      <Stack.Screen name="facturation/formulaire" options={{ title: 'Nouvelle facture' }} />
       <Stack.Screen name="rapports/index" options={{ title: 'Rapports' }} />
       <Stack.Screen name="documentation/index" options={{ title: 'Documentation' }} />
       <Stack.Screen name="chat/index" options={{ title: 'Chat interne' }} />

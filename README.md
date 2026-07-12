@@ -63,7 +63,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | **Devis quantitatif** | ✅ Implémenté — en-tête + lignes, calcul HT/TVA/TTC, lien Projet |
 | Planning (Gantt) | ⬜ Placeholder |
 | Achats | ⬜ Placeholder |
-| Facturation | ⬜ Placeholder |
+| **Facturation** | ✅ Implémenté — conversion devis→facture, lignes, paiements, relances |
 | Rapports | ⬜ Placeholder |
 | Documentation (GED) | ⬜ Placeholder |
 | Chat interne | ⬜ Placeholder |
