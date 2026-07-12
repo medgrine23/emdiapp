@@ -5,9 +5,10 @@
  * soit navigable sans backend. Sans effet si Firebase est configuré ou si des
  * données existent déjà. À supprimer en production.
  */
+import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
-import { StatutProjet } from '@/types/models';
+import { StatutDevis, StatutProjet } from '@/types/models';
 
 let fait = false;
 
@@ -29,7 +30,7 @@ export async function amorcerDonnees(): Promise<void> {
     u
   );
 
-  await projetsRepo.creer(
+  const projetA = await projetsRepo.creer(
     {
       nom: 'Réhabilitation groupe scolaire',
       reference: 'CH-2026-001',
@@ -43,6 +44,34 @@ export async function amorcerDonnees(): Promise<void> {
     },
     u
   );
+
+  // Devis d'exemple avec quelques lignes, rattaché au premier projet.
+  const devisA = await devisRepo.creer(
+    {
+      projetId: projetA.id,
+      numero: 'DEV-2026-001',
+      date: '2026-02-15T00:00:00.000Z',
+      statut: StatutDevis.Envoye,
+      tauxTVA: 19,
+      totalHT: 0,
+      totalTVA: 0,
+      totalTTC: 0,
+    },
+    u
+  );
+  const lignes = [
+    { designation: 'Démolition cloisons existantes', unite: 'm²', quantite: 180, prixUnitaire: 1200 },
+    { designation: 'Enduit et peinture salles', unite: 'm²', quantite: 640, prixUnitaire: 950 },
+    { designation: 'Remplacement menuiseries', unite: 'u', quantite: 24, prixUnitaire: 45000 },
+  ];
+  for (let i = 0; i < lignes.length; i++) {
+    const l = lignes[i];
+    await lignesDevisRepo.creer(
+      { ...l, totalLigne: l.quantite * l.prixUnitaire, devisId: devisA.id, projetId: projetA.id, ordre: i + 1 },
+      u
+    );
+  }
+  await recalculerDevis(devisA.id, u);
 
   await projetsRepo.creer(
     {

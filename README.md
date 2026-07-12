@@ -60,7 +60,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | Module | État |
 | --- | --- |
 | **Projet** (nœud central) | ✅ Implémenté — liste, détail, formulaire, 6 actions standard (§2) |
-| Devis quantitatif | ⬜ Placeholder |
+| **Devis quantitatif** | ✅ Implémenté — en-tête + lignes, calcul HT/TVA/TTC, lien Projet |
 | Planning (Gantt) | ⬜ Placeholder |
 | Achats | ⬜ Placeholder |
 | Facturation | ⬜ Placeholder |
