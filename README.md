@@ -57,5 +57,23 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 
 ## Les 9 modules (cahier des charges §3)
 
-Projet (nœud central) · Devis quantitatif · Planning (Gantt) · Achats ·
-Facturation · Rapports · Documentation (GED) · Chat interne · Paramètres.
+| Module | État |
+| --- | --- |
+| **Projet** (nœud central) | ✅ Implémenté — liste, détail, formulaire, 6 actions standard (§2) |
+| Devis quantitatif | ⬜ Placeholder |
+| Planning (Gantt) | ⬜ Placeholder |
+| Achats | ⬜ Placeholder |
+| Facturation | ⬜ Placeholder |
+| Rapports | ⬜ Placeholder |
+| Documentation (GED) | ⬜ Placeholder |
+| Chat interne | ⬜ Placeholder |
+| Paramètres | ⬜ Placeholder |
+
+Le module **Projet** sert de patron de référence : couche `Repository` réactive
+(`src/services/repository.ts`, implémentation mémoire pour tourner sans backend),
+service (`src/services/projetService.ts`), hooks (`src/hooks/useRepository.ts`) et
+écrans liste/détail/formulaire. Les modules suivants reprendront ce patron.
+
+> **Mode démo** : sans clés Firebase, les données sont en mémoire et amorcées avec
+> des projets d'exemple (`src/services/seed.ts`). Renseigner `.env` basculera vers
+> Firestore (adaptateur à finaliser).

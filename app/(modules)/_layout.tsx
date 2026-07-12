@@ -13,6 +13,8 @@ export default function ModulesLayout() {
       }}
     >
       <Stack.Screen name="projets/index" options={{ title: 'Projets' }} />
+      <Stack.Screen name="projets/[id]" options={{ title: 'Projet' }} />
+      <Stack.Screen name="projets/formulaire" options={{ title: 'Nouveau projet' }} />
       <Stack.Screen name="devis/index" options={{ title: 'Devis quantitatif' }} />
       <Stack.Screen name="planning/index" options={{ title: 'Planning' }} />
       <Stack.Screen name="achats/index" options={{ title: 'Achats' }} />

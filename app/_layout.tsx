@@ -1,9 +1,15 @@
+import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import { amorcerDonnees } from '@/services/seed';
 import { couleurs } from '@/theme/theme';
 
 export default function RootLayout() {
+  useEffect(() => {
+    amorcerDonnees();
+  }, []);
+
   return (
     <>
       <StatusBar style="light" />
