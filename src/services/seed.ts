@@ -5,6 +5,7 @@
  * soit navigable sans backend. Sans effet si Firebase est configuré ou si des
  * données existent déjà. À supprimer en production.
  */
+import { fournisseursRepo } from '@/services/achatService';
 import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
@@ -29,6 +30,9 @@ export async function amorcerDonnees(): Promise<void> {
     { nom: 'SARL Amimer Énergie', type: 'entreprise', email: 'projets@amimer.dz', telephone: '+213 34 11 11 11', adresse: 'Ihaddaden, Béjaïa' },
     u
   );
+
+  await fournisseursRepo.creer({ nom: 'Matériaux du Nord', contact: 'M. Kaci', telephone: '+213 34 22 22 22', adresse: 'Béjaïa' }, u);
+  await fournisseursRepo.creer({ nom: 'Sarl Bâti-Pro', contact: 'Mme Ould', telephone: '+213 34 33 33 33', adresse: 'Akbou' }, u);
 
   const projetA = await projetsRepo.creer(
     {
