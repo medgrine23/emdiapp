@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "EMDI Chantiers",
+    "slug": "emdiapp",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "emdiapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0B3D5C"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.emdi.chantiers"
+    },
+    "android": {
+      "package": "com.emdi.chantiers",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B3D5C"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
