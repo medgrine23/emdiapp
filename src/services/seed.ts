@@ -9,6 +9,7 @@ import { fournisseursRepo } from '@/services/achatService';
 import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
 import { calculerDuree, dependancesRepo, tachesRepo } from '@/services/planningService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
+import { conversationsRepo, envoyerPartage, envoyerTexte } from '@/services/chatService';
 import { attacherDocument, documentsRepo } from '@/services/documentService';
 import { entrepriseRepo, rolesRepo, taxesRepo } from '@/services/parametreService';
 import { rapportsRepo, rapportsTacheRepo } from '@/services/rapportService';
@@ -172,6 +173,14 @@ export async function amorcerDonnees(): Promise<void> {
   for (const r of rolesDefaut) {
     await rolesRepo.creer({ nom: r.cle, cle: r.cle, permissions: r.permissions }, u);
   }
+
+  // Chat : une conversation d'équipe avec un message et un partage métier.
+  const conv = await conversationsRepo.creer(
+    { nom: 'Équipe chantier scolaire', type: 'groupe', projetId: projetA.id, participantIds: [u], tachePlanningId: null },
+    u
+  );
+  await envoyerTexte(conv, 'Point du jour : le gros œuvre avance bien.', u);
+  await envoyerPartage(conv, { entiteType: 'tache_planning', entiteId: idsTaches[1], apercu: 'Gros œuvre' }, u);
 
   await projetsRepo.creer(
     {

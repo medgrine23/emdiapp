@@ -34,6 +34,8 @@ export default function ModulesLayout() {
       <Stack.Screen name="documentation/[id]" options={{ title: 'Document' }} />
       <Stack.Screen name="documentation/formulaire" options={{ title: 'Nouveau document' }} />
       <Stack.Screen name="chat/index" options={{ title: 'Chat interne' }} />
+      <Stack.Screen name="chat/[id]" options={{ title: 'Conversation' }} />
+      <Stack.Screen name="chat/formulaire" options={{ title: 'Nouvelle conversation' }} />
       <Stack.Screen name="parametres/index" options={{ title: 'Paramètres' }} />
       <Stack.Screen name="parametres/entreprise" options={{ title: 'Entreprise' }} />
       <Stack.Screen name="parametres/roles" options={{ title: 'Rôles & permissions' }} />

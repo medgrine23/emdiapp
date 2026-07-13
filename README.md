@@ -3,9 +3,10 @@
 Application mobile de **gestion centralisée de chantiers de construction** — du devis à la
 facturation, avec communication d'équipe temps réel.
 
-> Ce dépôt contient le **premier lot : Fondations** (livrables 1 & 3 du cahier des charges) :
-> modèle de données validé, proposition de stack et **scaffold Expo/React Native prêt à démarrer**.
-> Les modules fonctionnels seront implémentés après validation du modèle de données.
+> **Les 9 modules fonctionnels sont implémentés** au-dessus des fondations (MCD, stack,
+> architecture). L'application tourne de bout en bout en **mode démo** (données en mémoire,
+> amorcées) ; le branchement Firestore/Storage/Auth (temps réel + upload des médias) reste
+> à finaliser via l'adaptateur balisé dans `src/services/repository.ts`.
 
 ## Stack retenue
 
@@ -66,7 +67,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | **Facturation** | ✅ Implémenté — conversion devis→facture, lignes, paiements, relances |
 | **Rapports** | ✅ Implémenté — journalier/hebdo, météo, effectifs, MAJ avancement Planning |
 | **Documentation (GED)** | ✅ Implémenté — registre typé, filtre projet, liaison polymorphe |
-| Chat interne | ⬜ Placeholder |
+| **Chat interne** | ✅ Implémenté — conversations, messages, partage métier (temps réel Firebase à brancher) |
 | **Paramètres** | ✅ Implémenté — entreprise, rôles/permissions, taxes, clients, fournisseurs, notifications |
 
 Le module **Projet** sert de patron de référence : couche `Repository` réactive
