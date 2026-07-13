@@ -18,6 +18,10 @@ export default function ModulesLayout() {
       <Stack.Screen name="devis/index" options={{ title: 'Devis quantitatif' }} />
       <Stack.Screen name="devis/[id]" options={{ title: 'Devis' }} />
       <Stack.Screen name="devis/formulaire" options={{ title: 'Nouveau devis' }} />
+      <Stack.Screen name="quantitatif/index" options={{ title: 'Quantitatif (métré)' }} />
+      <Stack.Screen name="quantitatif/[id]" options={{ title: 'Pièce' }} />
+      <Stack.Screen name="quantitatif/formulaire" options={{ title: 'Nouvelle pièce' }} />
+      <Stack.Screen name="quantitatif/nomenclature" options={{ title: 'Nomenclature' }} />
       <Stack.Screen name="planning/index" options={{ title: 'Planning' }} />
       <Stack.Screen name="planning/[id]" options={{ title: 'Tâche' }} />
       <Stack.Screen name="planning/formulaire" options={{ title: 'Nouvelle tâche' }} />

@@ -8,6 +8,7 @@
 import { fournisseursRepo } from '@/services/achatService';
 import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
 import { calculerDuree, dependancesRepo, tachesRepo } from '@/services/planningService';
+import { calculerMetriques, catalogueRepo, piecesRepo } from '@/services/quantitatifService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
 import { conversationsRepo, envoyerPartage, envoyerTexte } from '@/services/chatService';
 import { attacherDocument, documentsRepo } from '@/services/documentService';
@@ -86,6 +87,26 @@ export async function amorcerDonnees(): Promise<void> {
     );
   }
   await recalculerDevis(devisA.id, u);
+
+  // Nomenclature (portes/fenêtres standard) et une pièce d'exemple (métré).
+  await catalogueRepo.creer({ nom: 'Porte standard', type: 'porte', largeur: 0.9, hauteur: 2.1 }, u);
+  await catalogueRepo.creer({ nom: 'Fenêtre 1.2×1.2', type: 'fenetre', largeur: 1.2, hauteur: 1.2 }, u);
+  const ouvertures = [
+    { nom: 'Porte standard', largeur: 0.9, hauteur: 2.1, quantite: 1 },
+    { nom: 'Fenêtre 1.2×1.2', largeur: 1.2, hauteur: 1.2, quantite: 2 },
+  ];
+  await piecesRepo.creer(
+    {
+      projetId: projetA.id,
+      nom: 'Salle de classe 1',
+      longueur: 7,
+      largeur: 6,
+      hauteur: 3,
+      ouvertures,
+      ...calculerMetriques({ longueur: 7, largeur: 6, hauteur: 3, ouvertures }),
+    },
+    u
+  );
 
   // Tâches de planning (Gantt) d'exemple, rattachées au projet scolaire.
   const planTaches = [

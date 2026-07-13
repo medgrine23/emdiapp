@@ -3,8 +3,9 @@ import { calculerTotaux } from '@/services/devisService';
 import { formaterTaille } from '@/services/documentService';
 import { resteAPayer } from '@/services/factureService';
 import { calculerDuree, joursEntre, plagePlanning } from '@/services/planningService';
+import { calculerMetriques, valeurMetrique } from '@/services/quantitatifService';
 import { statutDepuisAvancement } from '@/services/rapportService';
-import { Facture, StatutTache, TachePlanning } from '@/types/models';
+import { Facture, Piece, StatutTache, TachePlanning } from '@/types/models';
 
 describe('Devis — calcul des totaux', () => {
   test('somme HT + TVA + TTC', () => {
@@ -81,6 +82,32 @@ describe('Facturation — reste à payer', () => {
   test('total - payé, borné à zéro', () => {
     expect(resteAPayer({ totalTTC: 1000, montantPaye: 300 } as Facture)).toBe(700);
     expect(resteAPayer({ totalTTC: 1000, montantPaye: 1200 } as Facture)).toBe(0);
+  });
+});
+
+describe('Quantitatif — métré avec déduction des ouvertures (§3.10)', () => {
+  const piece = {
+    longueur: 7,
+    largeur: 6,
+    hauteur: 3,
+    ouvertures: [
+      { nom: 'Porte', largeur: 0.9, hauteur: 2.1, quantite: 1 }, // 1.89
+      { nom: 'Fenêtre', largeur: 1.2, hauteur: 1.2, quantite: 2 }, // 2.88
+    ],
+  };
+
+  test('surfaces et volume avec déductions', () => {
+    const m = calculerMetriques(piece);
+    expect(m.surfaceSol).toBe(42); // 7×6
+    expect(m.volume).toBe(126); // 42×3
+    expect(m.surfaceMurs).toBe(73.23); // 2×(7+6)×3 − (1.89 + 2.88)
+  });
+
+  test('valeurMetrique lit la bonne métrique', () => {
+    const p = { surfaceSol: 42, surfaceMurs: 73.23, volume: 126 } as Piece;
+    expect(valeurMetrique(p, 'surface_sol')).toBe(42);
+    expect(valeurMetrique(p, 'surface_murs')).toBe(73.23);
+    expect(valeurMetrique(p, 'volume')).toBe(126);
   });
 });
 

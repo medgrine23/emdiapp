@@ -162,6 +162,44 @@ export interface LigneDevis extends EntiteProjet {
   quantite: number;
   prixUnitaire: number;
   totalLigne: number; // quantite * prixUnitaire
+  // Quantité issue du métré (§3.10) : la quantité est alors calculée depuis une
+  // pièce et l'une de ses métriques (surface murs/sol, volume).
+  pieceId?: ID | null;
+  metrique?: TypeMetrique | null;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3.10 — Module Quantitatif / Métré                                  */
+/* ------------------------------------------------------------------ */
+
+export type TypeMetrique = 'surface_murs' | 'surface_sol' | 'volume';
+
+/** Ouverture (porte/fenêtre) déduite de la surface des murs d'une pièce. */
+export interface OuverturePiece {
+  nom: string;
+  largeur: number; // m
+  hauteur: number; // m
+  quantite: number;
+}
+
+export interface Piece extends EntiteProjet {
+  nom: string;
+  longueur: number; // m
+  largeur: number; // m
+  hauteur: number; // m
+  ouvertures: OuverturePiece[];
+  // Métriques dénormalisées (recalculées à chaque enregistrement).
+  surfaceSol: number; // m² = longueur × largeur
+  surfaceMurs: number; // m² = périmètre × hauteur − ouvertures
+  volume: number; // m³ = longueur × largeur × hauteur
+}
+
+/** Nomenclature réutilisable de portes/fenêtres standard. */
+export interface CatalogueOuverture extends EntiteBase {
+  nom: string;
+  type: 'porte' | 'fenetre';
+  largeur: number; // m
+  hauteur: number; // m
 }
 
 /* ------------------------------------------------------------------ */

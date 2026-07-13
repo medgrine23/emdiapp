@@ -32,6 +32,13 @@ export const MODULES: ModuleApp[] = [
     icone: 'file-text',
   },
   {
+    cle: 'quantitatif',
+    route: '/(modules)/quantitatif',
+    titre: 'Quantitatif (métré)',
+    description: 'Pièces : surfaces et volumes calculés, déduction des ouvertures.',
+    icone: 'box',
+  },
+  {
     cle: 'planning',
     route: '/(modules)/planning',
     titre: 'Planning (Gantt)',

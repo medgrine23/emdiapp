@@ -13,6 +13,7 @@ import {
   recalculerDevis,
 } from '@/services/devisService';
 import { projetsRepo } from '@/services/projetService';
+import { piecesRepo } from '@/services/quantitatifService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import { couleurs, espacements, rayons } from '@/theme/theme';
 import { EtatEntite, LigneDevis } from '@/types/models';
@@ -26,6 +27,7 @@ export default function DetailDevis() {
   const { item: devis, chargement } = useDocument(devisRepo, id);
   const { item: projet } = useDocument(projetsRepo, devis?.projetId);
   const { items: lignes } = useCollection<LigneDevis>(lignesDevisRepo, { filtre: { devisId: id } });
+  const { items: pieces } = useCollection(piecesRepo, { filtre: { projetId: devis?.projetId } });
 
   const [modalLigne, setModalLigne] = useState(false);
   const [ligneEnEdition, setLigneEnEdition] = useState<LigneDevis | null>(null);
@@ -153,6 +155,7 @@ export default function DetailDevis() {
       <ModalLigneDevis
         visible={modalLigne}
         valeurInitiale={ligneEnEdition}
+        pieces={pieces}
         onAnnuler={() => setModalLigne(false)}
         onConfirmer={enregistrerLigne}
       />
