@@ -7,9 +7,10 @@
  */
 import { fournisseursRepo } from '@/services/achatService';
 import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
+import { calculerDuree, dependancesRepo, tachesRepo } from '@/services/planningService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
-import { StatutDevis, StatutProjet } from '@/types/models';
+import { StatutDevis, StatutProjet, StatutTache } from '@/types/models';
 
 let fait = false;
 
@@ -76,6 +77,43 @@ export async function amorcerDonnees(): Promise<void> {
     );
   }
   await recalculerDevis(devisA.id, u);
+
+  // Tâches de planning (Gantt) d'exemple, rattachées au projet scolaire.
+  const planTaches = [
+    { nom: 'Démolition', debut: '2026-03-02', fin: '2026-03-13', av: 100, statut: StatutTache.Terminee },
+    { nom: 'Gros œuvre', debut: '2026-03-16', fin: '2026-04-24', av: 60, statut: StatutTache.EnCours },
+    { nom: 'Menuiseries', debut: '2026-04-27', fin: '2026-05-15', av: 0, statut: StatutTache.APlanifier },
+    { nom: 'Peinture & finitions', debut: '2026-05-18', fin: '2026-06-19', av: 0, statut: StatutTache.APlanifier },
+  ];
+  const idsTaches: string[] = [];
+  for (let i = 0; i < planTaches.length; i++) {
+    const t = planTaches[i];
+    const debut = new Date(t.debut).toISOString();
+    const fin = new Date(t.fin).toISOString();
+    const cree = await tachesRepo.creer(
+      {
+        projetId: projetA.id,
+        nom: t.nom,
+        dateDebut: debut,
+        dateFin: fin,
+        dureeJours: calculerDuree(debut, fin),
+        avancementPct: t.av,
+        statut: t.statut,
+        ligneDevisId: null,
+        responsableId: null,
+        ordre: i + 1,
+      },
+      u
+    );
+    idsTaches.push(cree.id);
+  }
+  // Enchaînement Fin → Début entre tâches successives.
+  for (let i = 1; i < idsTaches.length; i++) {
+    await dependancesRepo.creer(
+      { projetId: projetA.id, tachePredecesseurId: idsTaches[i - 1], tacheSuccesseurId: idsTaches[i], type: 'FD', decalageJours: 0 },
+      u
+    );
+  }
 
   await projetsRepo.creer(
     {

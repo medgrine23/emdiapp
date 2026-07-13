@@ -61,7 +61,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | --- | --- |
 | **Projet** (nœud central) | ✅ Implémenté — liste, détail, formulaire, 6 actions standard (§2) |
 | **Devis quantitatif** | ✅ Implémenté — en-tête + lignes, calcul HT/TVA/TTC, lien Projet |
-| Planning (Gantt) | ⬜ Placeholder |
+| **Planning (Gantt)** | ✅ Implémenté — diagramme de Gantt, dépendances typées, avancement |
 | **Achats** | ✅ Implémenté — bons de commande, contrôle budgétaire vs devis, livraisons |
 | **Facturation** | ✅ Implémenté — conversion devis→facture, lignes, paiements, relances |
 | Rapports | ⬜ Placeholder |
