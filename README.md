@@ -35,6 +35,10 @@ Justification détaillée : [`docs/03-stack-technique.md`](docs/03-stack-techniq
 
 > 🟢 **Grand débutant ?** Suivez le [**Guide de démarrage pas-à-pas**](GUIDE-DEMARRAGE.md)
 > (aperçu navigateur, Expo Go, ou APK Android).
+>
+> 📱 **Seulement un téléphone Android, pas d'ordinateur ?** Suivez
+> [**Obtenir l'APK depuis ton téléphone**](APK-DEPUIS-TELEPHONE.md) (fabrication
+> dans le cloud via GitHub Actions + Expo, sans ordinateur).
 
 ```bash
 npm install

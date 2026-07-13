@@ -1,0 +1,37 @@
+name: 📱 Fabriquer l'APK Android
+
+# Se lance à la demande depuis l'onglet "Actions" de GitHub (bouton "Run workflow"),
+# y compris depuis le navigateur d'un téléphone. La fabrication tourne sur les
+# serveurs Expo (gratuit) ; le lien de téléchargement de l'APK s'affiche dans le
+# journal du build (et sur expo.dev > Builds).
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build APK (profil preview)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm install
+
+      - name: Configurer EAS (Expo)
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Lier le projet Expo (une fois)
+        run: eas init --non-interactive --force || true
+
+      - name: Fabriquer l'APK
+        run: eas build --platform android --profile preview --non-interactive
