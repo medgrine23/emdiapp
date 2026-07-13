@@ -1,16 +1,18 @@
-/** Palette et espacements de l'application. */
+/** Palette et espacements de l'application (thème clair affiné — voir maquette). */
 export const couleurs = {
   primaire: '#0B3D5C',
   primaireClair: '#1B6C99',
-  accent: '#F29F05',
-  fond: '#F4F6F8',
+  accent: '#E8900A',
+  fond: '#EAEEF2',
   surface: '#FFFFFF',
-  texte: '#1A2B34',
-  texteSecondaire: '#5B6B75',
-  bordure: '#DFE5EA',
+  surface2: '#F4F7F9',
+  texte: '#14232E',
+  texteSecondaire: '#55697A',
+  bordure: '#D7E0E7',
+  neutre: '#64798A',
   succes: '#2E7D32',
   danger: '#C62828',
-  alerte: '#ED6C02',
+  alerte: '#E8900A',
 };
 
 export const espacements = {
