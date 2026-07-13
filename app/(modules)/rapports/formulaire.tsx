@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
+import { ChampDate } from '@/components/ChampDate';
 import { useCollection } from '@/hooks/useRepository';
 import { projetsRepo } from '@/services/projetService';
 import { CONDITIONS_METEO, LIBELLE_TYPE_RAPPORT, rapportsRepo } from '@/services/rapportService';
@@ -93,8 +94,7 @@ export default function FormulaireRapport() {
         ))}
       </View>
 
-      <Label texte="Date (AAAA-MM-JJ)" />
-      <TextInput style={styles.champ} value={date} onChangeText={setDate} />
+      <ChampDate label="Date" value={date} onChange={setDate} />
 
       <Label texte="Météo" />
       <View style={styles.chips}>

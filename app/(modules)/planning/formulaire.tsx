@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { ChampDate } from '@/components/ChampDate';
 import { useCollection } from '@/hooks/useRepository';
 import { lignesDevisRepo } from '@/services/devisService';
 import { calculerDuree, LIBELLE_STATUT_TACHE, tachesRepo } from '@/services/planningService';
@@ -95,12 +96,10 @@ export default function FormulaireTache() {
 
       <View style={styles.ligne}>
         <View style={styles.moitie}>
-          <Label texte="Début (AAAA-MM-JJ)" />
-          <TextInput style={styles.champ} value={dateDebut} onChangeText={setDateDebut} />
+          <ChampDate label="Début" value={dateDebut} onChange={setDateDebut} />
         </View>
         <View style={styles.moitie}>
-          <Label texte="Fin (AAAA-MM-JJ)" />
-          <TextInput style={styles.champ} value={dateFin} onChangeText={setDateFin} />
+          <ChampDate label="Fin" value={dateFin} onChange={setDateFin} />
         </View>
       </View>
 

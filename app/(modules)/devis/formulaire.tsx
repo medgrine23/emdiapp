@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { ChampDate } from '@/components/ChampDate';
 import { useCollection } from '@/hooks/useRepository';
 import { devisRepo, LIBELLE_STATUT_DEVIS } from '@/services/devisService';
 import { projetsRepo } from '@/services/projetService';
@@ -80,8 +81,7 @@ export default function FormulaireDevis() {
       <Label texte="Numéro *" />
       <TextInput style={styles.champ} value={numero} onChangeText={setNumero} placeholder="DEV-2026-001" autoCapitalize="characters" />
 
-      <Label texte="Date (AAAA-MM-JJ)" />
-      <TextInput style={styles.champ} value={date} onChangeText={setDate} placeholder="2026-07-12" />
+      <ChampDate label="Date" value={date} onChange={setDate} />
 
       <Label texte="Taux de TVA (%)" />
       <TextInput style={styles.champ} value={tauxTVA} onChangeText={setTauxTVA} keyboardType="numeric" />

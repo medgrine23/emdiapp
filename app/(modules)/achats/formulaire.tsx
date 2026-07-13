@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { ChampDate } from '@/components/ChampDate';
 import { bonsCommandeRepo, fournisseursRepo, LIBELLE_STATUT_BON_COMMANDE } from '@/services/achatService';
 import { projetsRepo } from '@/services/projetService';
 import { SansMeta } from '@/services/repository';
@@ -86,8 +87,7 @@ export default function FormulaireBonCommande() {
       <Label texte="Numéro *" />
       <TextInput style={styles.champ} value={numero} onChangeText={setNumero} placeholder="BC-2026-001" autoCapitalize="characters" />
 
-      <Label texte="Date (AAAA-MM-JJ)" />
-      <TextInput style={styles.champ} value={date} onChangeText={setDate} />
+      <ChampDate label="Date" value={date} onChange={setDate} />
 
       <Label texte="Statut" />
       <View style={styles.chips}>
