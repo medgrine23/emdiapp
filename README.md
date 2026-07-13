@@ -64,7 +64,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | **Planning (Gantt)** | ✅ Implémenté — diagramme de Gantt, dépendances typées, avancement |
 | **Achats** | ✅ Implémenté — bons de commande, contrôle budgétaire vs devis, livraisons |
 | **Facturation** | ✅ Implémenté — conversion devis→facture, lignes, paiements, relances |
-| Rapports | ⬜ Placeholder |
+| **Rapports** | ✅ Implémenté — journalier/hebdo, météo, effectifs, MAJ avancement Planning |
 | Documentation (GED) | ⬜ Placeholder |
 | Chat interne | ⬜ Placeholder |
 | Paramètres | ⬜ Placeholder |

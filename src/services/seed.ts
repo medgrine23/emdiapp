@@ -9,6 +9,7 @@ import { fournisseursRepo } from '@/services/achatService';
 import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
 import { calculerDuree, dependancesRepo, tachesRepo } from '@/services/planningService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
+import { rapportsRepo, rapportsTacheRepo } from '@/services/rapportService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import { StatutDevis, StatutProjet, StatutTache } from '@/types/models';
 
@@ -114,6 +115,26 @@ export async function amorcerDonnees(): Promise<void> {
       u
     );
   }
+
+  // Rapport de chantier d'exemple, avec un avancement de tâche.
+  const rapportA = await rapportsRepo.creer(
+    {
+      projetId: projetA.id,
+      type: 'journalier',
+      date: '2026-03-20T00:00:00.000Z',
+      auteurId: u,
+      meteo: { condition: 'Ensoleillé', temperatureC: 22, intemperie: false },
+      effectifPresent: 8,
+      remarques: 'Coulage de la dalle du rez-de-chaussée réalisé.',
+      avancementGlobalPct: 45,
+      photoIds: [],
+    },
+    u
+  );
+  await rapportsTacheRepo.creer(
+    { rapportId: rapportA.id, projetId: projetA.id, tachePlanningId: idsTaches[1], avancementPct: 60, commentaire: 'Élévation des murs porteurs en cours.' },
+    u
+  );
 
   await projetsRepo.creer(
     {
