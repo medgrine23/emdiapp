@@ -10,7 +10,9 @@ import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisSer
 import { calculerDuree, dependancesRepo, tachesRepo } from '@/services/planningService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
 import { attacherDocument, documentsRepo } from '@/services/documentService';
+import { entrepriseRepo, rolesRepo, taxesRepo } from '@/services/parametreService';
 import { rapportsRepo, rapportsTacheRepo } from '@/services/rapportService';
+import { RoleUtilisateur } from '@/types/models';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import { StatutDevis, StatutProjet, StatutTache } from '@/types/models';
 
@@ -152,6 +154,24 @@ export async function amorcerDonnees(): Promise<void> {
   );
   // La photo du jour est rattachée au rapport (liaison polymorphe §3.7).
   await attacherDocument(photoJour.id, 'rapport', rapportA.id, projetA.id, u);
+
+  // Paramètres : entreprise, taxes et rôles par défaut.
+  await entrepriseRepo.creer(
+    { nom: 'EMDI Construction', adresse: 'Béjaïa, Algérie', numeroTVA: 'DZ0000000000', telephone: '+213 34 00 00 01', email: 'contact@emdi.dz' },
+    u
+  );
+  await taxesRepo.creer({ nom: 'TVA 19 %', taux: 19, parDefaut: true }, u);
+  await taxesRepo.creer({ nom: 'TVA 9 %', taux: 9, parDefaut: false }, u);
+
+  const rolesDefaut: { cle: RoleUtilisateur; permissions: string[] }[] = [
+    { cle: RoleUtilisateur.Admin, permissions: ['projets', 'devis', 'planning', 'achats', 'facturation', 'rapports', 'documentation', 'chat', 'parametres'] },
+    { cle: RoleUtilisateur.ChefChantier, permissions: ['projets', 'planning', 'rapports', 'achats', 'documentation', 'chat'] },
+    { cle: RoleUtilisateur.Magasinier, permissions: ['achats', 'documentation', 'chat'] },
+    { cle: RoleUtilisateur.Comptable, permissions: ['devis', 'facturation', 'documentation'] },
+  ];
+  for (const r of rolesDefaut) {
+    await rolesRepo.creer({ nom: r.cle, cle: r.cle, permissions: r.permissions }, u);
+  }
 
   await projetsRepo.creer(
     {

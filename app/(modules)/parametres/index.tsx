@@ -1,10 +1,42 @@
-import { EcranModule } from '@/components/EcranModule';
+import { Link } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import { couleurs, espacements, rayons } from '@/theme/theme';
+
+const SECTIONS = [
+  { route: '/(modules)/parametres/entreprise', icone: '🏢', titre: 'Entreprise', desc: 'Nom, adresse, SIRET, TVA' },
+  { route: '/(modules)/parametres/roles', icone: '🔐', titre: 'Rôles & permissions', desc: 'Droits d\'accès par profil' },
+  { route: '/(modules)/parametres/taxes', icone: '％', titre: 'Taxes', desc: 'Taux de TVA et taxes' },
+  { route: '/(modules)/parametres/clients', icone: '👤', titre: 'Clients', desc: 'Référentiel des clients' },
+  { route: '/(modules)/parametres/fournisseurs', icone: '🚚', titre: 'Fournisseurs', desc: 'Référentiel des fournisseurs' },
+  { route: '/(modules)/parametres/notifications', icone: '🔔', titre: 'Notifications', desc: 'Préférences de notification' },
+];
 
 export default function EcranParametres() {
   return (
-    <EcranModule
-      titre="Paramètres"
-      description="Rôles, permissions, taxes, informations entreprise, notifications."
-    />
+    <ScrollView style={styles.conteneur} contentContainerStyle={styles.contenu}>
+      {SECTIONS.map((s) => (
+        <Link key={s.route} href={s.route as never} asChild>
+          <Pressable style={styles.carte}>
+            <Text style={styles.icone}>{s.icone}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.titre}>{s.titre}</Text>
+              <Text style={styles.desc}>{s.desc}</Text>
+            </View>
+            <Text style={styles.chevron}>›</Text>
+          </Pressable>
+        </Link>
+      ))}
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  conteneur: { flex: 1, backgroundColor: couleurs.fond },
+  contenu: { padding: espacements.md, gap: espacements.sm },
+  carte: { flexDirection: 'row', alignItems: 'center', gap: espacements.md, backgroundColor: couleurs.surface, borderRadius: rayons.md, borderWidth: 1, borderColor: couleurs.bordure, padding: espacements.md },
+  icone: { fontSize: 24, width: 32, textAlign: 'center' },
+  titre: { fontSize: 16, fontWeight: '700', color: couleurs.texte },
+  desc: { fontSize: 13, color: couleurs.texteSecondaire, marginTop: 2 },
+  chevron: { fontSize: 26, color: couleurs.texteSecondaire },
+});

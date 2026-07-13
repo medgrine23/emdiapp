@@ -67,7 +67,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | **Rapports** | ✅ Implémenté — journalier/hebdo, météo, effectifs, MAJ avancement Planning |
 | **Documentation (GED)** | ✅ Implémenté — registre typé, filtre projet, liaison polymorphe |
 | Chat interne | ⬜ Placeholder |
-| Paramètres | ⬜ Placeholder |
+| **Paramètres** | ✅ Implémenté — entreprise, rôles/permissions, taxes, clients, fournisseurs, notifications |
 
 Le module **Projet** sert de patron de référence : couche `Repository` réactive
 (`src/services/repository.ts`, implémentation mémoire pour tourner sans backend),
