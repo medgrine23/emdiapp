@@ -42,6 +42,17 @@ npm start              # puis 'a' (Android), 'i' (iOS) ou 'w' (web)
 > Un projet Firebase doit être créé (Firestore + Storage + Auth) et les clés
 > reportées dans `.env`. Voir `.env.example`.
 
+## Tests & vérifications
+
+```bash
+npm test         # tests unitaires de la logique métier (Jest)
+npm run typecheck # vérification TypeScript
+```
+
+Les tests (`__tests__/`) couvrent la machine à états (§2), le calcul des totaux,
+le contrôle budgétaire achat vs devis, la conversion devis→facture, le suivi des
+paiements et la propagation de l'avancement rapport→planning.
+
 ## Structure du projet
 
 ```
