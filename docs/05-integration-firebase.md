@@ -53,9 +53,9 @@ Le contrôle d'accès serveur est la **source de vérité** ; le masquage côté
 
 | Sujet | Détail |
 | --- | --- |
-| **Auth — UI** | Écran de connexion + `AuthGate` au niveau racine. Le service est prêt (`src/services/authService.ts` : `connexion`/`inscription`/`deconnexion`/`observerAuth`). `observerAuth` renseigne déjà la session (`definirUtilisateurCourant`) pour l'audit. |
+| **Auth — UI** | ✅ Fait — écran de connexion (`src/auth/LoginScreen.tsx`) + gating racine (`app/_layout.tsx`) via `AuthProvider`. |
 | **Persistance Auth** | Ajouter `@react-native-async-storage/async-storage` et remplacer `getAuth` par `initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage) })` dans `config.ts` pour conserver la session entre lancements. |
-| **Médias** | Brancher `expo-image-picker` / `expo-document-picker` / `expo-av` sur les écrans Chat et GED, puis `uploadFichier()` (`src/services/storageService.ts`) → stocker l'URL dans `Message.mediaUrl` / `Document.url`. |
+| **Médias** | ✅ Fait — `src/services/mediaService.ts` (expo-image-picker / expo-document-picker / expo-av) branché sur le Chat (photo/galerie/fichier/note vocale) et la GED ; `persisterMedia()` téléverse via Storage en mode Firebase, conserve l'URI local en mode démo. |
 | **Timestamps serveur** | `FirestoreRepository` stocke des dates ISO côté client (cohérence des types). Passer à `serverTimestamp()` si l'horodatage serveur est requis (nécessite une normalisation Timestamp → ISO en lecture). |
 | **Index** | Les listes filtrent/trient côté client (pas d'index composite requis). Si le volume l'exige, passer au tri/filtre serveur et déclarer les index dans `firestore.indexes.json`. |
 | **Cascade d'archivage** | Implémenter l'archivage en cascade projet (§3.1) via une Cloud Function. |

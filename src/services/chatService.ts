@@ -7,6 +7,7 @@
  * tâche, une ligne de devis, un rapport ou un document partagé dans la
  * conversation pour créer du contexte (exigence transverse §3.9).
  */
+import { MediaLocal, persisterMedia } from '@/services/mediaService';
 import { getRepository } from '@/services/repository';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import {
@@ -48,6 +49,30 @@ export async function envoyerTexte(
   if (!texte) return;
   await messagesRepo.creer(
     { conversationId: conversation.id, projetId: conversation.projetId ?? null, auteurId: utilisateurId, type: 'texte', contenu: texte, envoyeLe: new Date().toISOString() },
+    utilisateurId
+  );
+  await conversationsRepo.modifier(conversation.id, { dernierMessageLe: new Date().toISOString() }, utilisateurId);
+}
+
+/** Envoie un message média (photo/vidéo/audio/fichier) après persistance. */
+export async function envoyerMedia(
+  conversation: Conversation,
+  media: MediaLocal,
+  utilisateurId: ID = UTILISATEUR_COURANT_ID
+): Promise<void> {
+  const url = await persisterMedia(media, 'chat', conversation.projetId);
+  await messagesRepo.creer(
+    {
+      conversationId: conversation.id,
+      projetId: conversation.projetId ?? null,
+      auteurId: utilisateurId,
+      type: media.type,
+      contenu: media.type === 'fichier' ? media.nom : undefined,
+      mediaUrl: url,
+      mediaMimeType: media.mimeType,
+      dureeSecondes: media.dureeSecondes,
+      envoyeLe: new Date().toISOString(),
+    },
     utilisateurId
   );
   await conversationsRepo.modifier(conversation.id, { dernierMessageLe: new Date().toISOString() }, utilisateurId);

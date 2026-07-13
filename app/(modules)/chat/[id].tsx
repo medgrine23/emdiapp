@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import {
+  ActivityIndicator,
+  Alert,
   FlatList,
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -14,12 +17,20 @@ import {
 import { ModalPartage } from '@/components/ModalPartage';
 import {
   conversationsRepo,
+  envoyerMedia,
   envoyerPartage,
   envoyerTexte,
   LIBELLE_ENTITE_PARTAGEE,
   messagesRepo,
   routePartage,
 } from '@/services/chatService';
+import {
+  arreterEnregistrement,
+  choisirFichier,
+  choisirImage,
+  demarrerEnregistrement,
+  prendrePhoto,
+} from '@/services/mediaService';
 import { lignesDevisRepo } from '@/services/devisService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import { useCollection, useDocument } from '@/hooks/useRepository';
@@ -35,6 +46,8 @@ export default function VueConversation() {
   const { items: messages } = useCollection<Message>(messagesRepo, { filtre: { conversationId: id } });
   const [texte, setTexte] = useState('');
   const [modalPartage, setModalPartage] = useState(false);
+  const [enregistre, setEnregistre] = useState(false);
+  const [occupe, setOccupe] = useState(false);
 
   if (chargement) return <Centre texte="Chargement…" />;
   if (!conversation) return <Centre texte="Conversation introuvable." />;
@@ -52,6 +65,46 @@ export default function VueConversation() {
   const partager = async (p: PartageMetier) => {
     setModalPartage(false);
     await envoyerPartage(conversation, p, u);
+  };
+
+  const envoyerDepuis = async (selecteur: () => Promise<import('@/services/mediaService').MediaLocal | null>) => {
+    try {
+      setOccupe(true);
+      const media = await selecteur();
+      if (media) await envoyerMedia(conversation, media, u);
+    } catch (e) {
+      Alert.alert('Média', (e as Error).message);
+    } finally {
+      setOccupe(false);
+    }
+  };
+
+  const ouvrirPieceJointe = () =>
+    Alert.alert('Ajouter', undefined, [
+      { text: 'Partager un élément', onPress: () => setModalPartage(true) },
+      { text: 'Prendre une photo', onPress: () => envoyerDepuis(prendrePhoto) },
+      { text: 'Galerie (photo/vidéo)', onPress: () => envoyerDepuis(choisirImage) },
+      { text: 'Fichier', onPress: () => envoyerDepuis(choisirFichier) },
+      { text: 'Annuler', style: 'cancel' },
+    ]);
+
+  const basculerMicro = async () => {
+    try {
+      if (!enregistre) {
+        await demarrerEnregistrement();
+        setEnregistre(true);
+      } else {
+        setEnregistre(false);
+        setOccupe(true);
+        const media = await arreterEnregistrement();
+        if (media) await envoyerMedia(conversation, media, u);
+      }
+    } catch (e) {
+      setEnregistre(false);
+      Alert.alert('Note vocale', (e as Error).message);
+    } finally {
+      setOccupe(false);
+    }
   };
 
   const ouvrirPartage = async (p: PartageMetier) => {
@@ -82,13 +135,21 @@ export default function VueConversation() {
         </View>
       ) : (
         <View style={styles.barre}>
-          <Pressable style={styles.partageBtn} onPress={() => setModalPartage(true)}>
+          <Pressable style={styles.partageBtn} onPress={ouvrirPieceJointe} disabled={occupe}>
             <Text style={styles.partageBtnTexte}>＋</Text>
           </Pressable>
-          <TextInput style={styles.saisie} value={texte} onChangeText={setTexte} placeholder="Votre message…" multiline />
-          <Pressable style={[styles.envoyer, !texte.trim() && styles.envoyerOff]} onPress={envoyer} disabled={!texte.trim()}>
-            <Text style={styles.envoyerTexte}>➤</Text>
-          </Pressable>
+          <TextInput style={styles.saisie} value={texte} onChangeText={setTexte} placeholder={enregistre ? 'Enregistrement…' : 'Votre message…'} multiline editable={!enregistre} />
+          {occupe ? (
+            <ActivityIndicator style={styles.micro} color={couleurs.primaire} />
+          ) : texte.trim() ? (
+            <Pressable style={styles.envoyer} onPress={envoyer}>
+              <Text style={styles.envoyerTexte}>➤</Text>
+            </Pressable>
+          ) : (
+            <Pressable style={[styles.micro, enregistre && styles.microActif]} onPress={basculerMicro}>
+              <Text style={styles.microTexte}>{enregistre ? '■' : '🎤'}</Text>
+            </Pressable>
+          )}
         </View>
       )}
 
@@ -108,6 +169,14 @@ function Bulle({ message, mien, onOuvrirPartage }: { message: Message; mien: boo
             <Text style={[styles.partageApercu, mien && styles.texteMien]} numberOfLines={2}>{message.partage.apercu}</Text>
             <Text style={[styles.partageAction, mien && styles.texteMienSecondaire]}>Ouvrir ›</Text>
           </Pressable>
+        ) : message.type === 'image' && message.mediaUrl ? (
+          <Image source={{ uri: message.mediaUrl }} style={styles.image} resizeMode="cover" />
+        ) : message.type === 'audio' ? (
+          <Text style={[styles.texte, mien && styles.texteMien]}>🎧 Note vocale{message.dureeSecondes ? ` · ${message.dureeSecondes}s` : ''}</Text>
+        ) : message.type === 'video' ? (
+          <Text style={[styles.texte, mien && styles.texteMien]}>🎬 Vidéo</Text>
+        ) : message.type === 'fichier' ? (
+          <Text style={[styles.texte, mien && styles.texteMien]}>📎 {message.contenu ?? 'Fichier'}</Text>
         ) : (
           <Text style={[styles.texte, mien && styles.texteMien]}>{message.contenu}</Text>
         )}
@@ -147,6 +216,10 @@ const styles = StyleSheet.create({
   envoyer: { width: 40, height: 40, borderRadius: 20, backgroundColor: couleurs.accent, alignItems: 'center', justifyContent: 'center' },
   envoyerOff: { backgroundColor: couleurs.bordure },
   envoyerTexte: { color: '#fff', fontSize: 18 },
+  micro: { width: 40, height: 40, borderRadius: 20, backgroundColor: couleurs.fond, alignItems: 'center', justifyContent: 'center' },
+  microActif: { backgroundColor: couleurs.danger },
+  microTexte: { fontSize: 18, color: '#fff' },
+  image: { width: 200, height: 150, borderRadius: rayons.sm },
   barreLecture: { padding: espacements.md, backgroundColor: couleurs.surface, borderTopWidth: 1, borderTopColor: couleurs.bordure },
   lectureTexte: { color: couleurs.texteSecondaire, textAlign: 'center', fontStyle: 'italic' },
 });

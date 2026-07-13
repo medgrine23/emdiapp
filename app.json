@@ -26,7 +26,22 @@
       "bundler": "metro",
       "output": "static"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "L'application accède à vos photos pour les partager sur les chantiers.",
+          "cameraPermission": "L'application accède à la caméra pour prendre des photos de chantier."
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "L'application accède au micro pour enregistrer des notes vocales."
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     }

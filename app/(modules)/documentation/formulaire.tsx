@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 
 import { useCollection } from '@/hooks/useRepository';
 import { documentsRepo, LIBELLE_TYPE_DOCUMENT } from '@/services/documentService';
+import { choisirFichier, choisirImage, MediaLocal, persisterMedia } from '@/services/mediaService';
 import { projetsRepo } from '@/services/projetService';
 import { SansMeta } from '@/services/repository';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
@@ -24,7 +25,22 @@ export default function FormulaireDocument() {
   const [projetId, setProjetId] = useState<string | null>(projetParam ?? null);
   const [url, setUrl] = useState('');
   const [tailleKo, setTailleKo] = useState('');
+  const [media, setMedia] = useState<MediaLocal | null>(null);
   const [erreur, setErreur] = useState<string | null>(null);
+
+  const selectionner = async (selecteur: () => Promise<MediaLocal | null>) => {
+    try {
+      const m = await selecteur();
+      if (!m) return;
+      setMedia(m);
+      if (!nom.trim()) setNom(m.nom);
+      setTailleKo(m.tailleOctets ? String(Math.round(m.tailleOctets / 1024)) : '');
+      if (m.type === 'image') setType('photo');
+      else if (m.type === 'video') setType('video');
+    } catch (e) {
+      setErreur((e as Error).message);
+    }
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -40,12 +56,21 @@ export default function FormulaireDocument() {
 
   const enregistrer = async () => {
     if (!nom.trim()) return setErreur('Le nom du document est obligatoire.');
+    let urlFinale = url.trim();
+    let mimeType = media?.mimeType ?? '';
+    if (media) {
+      try {
+        urlFinale = await persisterMedia(media, 'documents', projetId);
+      } catch (e) {
+        return setErreur((e as Error).message);
+      }
+    }
     const data: SansMeta<Document> = {
       nom: nom.trim(),
       type,
       projetId: projetId ?? null,
-      url: url.trim(),
-      mimeType: '',
+      url: urlFinale,
+      mimeType,
       tailleOctets: (Number(tailleKo.replace(/\s/g, '')) || 0) * 1024,
       uploadePar: u,
     };
@@ -63,9 +88,19 @@ export default function FormulaireDocument() {
       {erreur ? <Text style={styles.erreur}>{erreur}</Text> : null}
 
       <Text style={styles.info}>
-        En mode démo, seules les métadonnées sont enregistrées. L'upload du fichier se fera via
-        Firebase Storage (sélecteur natif à intégrer).
+        Choisissez un fichier ou une photo. En mode Firebase, il est téléversé vers Storage ;
+        en mode démo, seul l'aperçu local est conservé.
       </Text>
+
+      <View style={styles.picker}>
+        <Pressable style={styles.pickerBtn} onPress={() => selectionner(choisirFichier)}>
+          <Text style={styles.pickerTexte}>📎 Fichier</Text>
+        </Pressable>
+        <Pressable style={styles.pickerBtn} onPress={() => selectionner(choisirImage)}>
+          <Text style={styles.pickerTexte}>🖼️ Photo / Vidéo</Text>
+        </Pressable>
+      </View>
+      {media ? <Text style={styles.mediaChoisi}>Sélectionné : {media.nom}</Text> : null}
 
       <Label texte="Nom *" />
       <TextInput style={styles.champ} value={nom} onChangeText={setNom} placeholder="Ex : Plan de masse RDC" />
@@ -114,6 +149,10 @@ const styles = StyleSheet.create({
   contenu: { padding: espacements.md, paddingBottom: espacements.xl },
   erreur: { color: couleurs.danger, backgroundColor: `${couleurs.danger}10`, padding: espacements.sm, borderRadius: rayons.sm, marginBottom: espacements.sm },
   info: { fontSize: 12, fontStyle: 'italic', color: couleurs.texteSecondaire, marginBottom: espacements.sm },
+  picker: { flexDirection: 'row', gap: espacements.sm },
+  pickerBtn: { flex: 1, borderWidth: 1.5, borderColor: couleurs.primaireClair, borderRadius: rayons.sm, padding: espacements.sm, alignItems: 'center' },
+  pickerTexte: { color: couleurs.primaireClair, fontWeight: '700' },
+  mediaChoisi: { fontSize: 13, color: couleurs.succes, marginTop: espacements.sm, fontWeight: '600' },
   label: { fontSize: 13, fontWeight: '600', color: couleurs.texteSecondaire, marginTop: espacements.md, marginBottom: espacements.xs },
   champ: { backgroundColor: couleurs.surface, borderWidth: 1, borderColor: couleurs.bordure, borderRadius: rayons.sm, padding: espacements.sm, color: couleurs.texte, fontSize: 15 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: espacements.xs },
