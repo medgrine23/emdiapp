@@ -41,10 +41,17 @@ service cloud.firestore {
       return peut(module) && ecritureValide();
     }
 
-    // Référentiel des utilisateurs : lecture pour tous les connectés, écriture admin.
+    // Référentiel des utilisateurs.
+    // Auto-provisionnement : un utilisateur crée son propre profil (rôle non-admin).
+    // Les admins gèrent les rôles ; un utilisateur peut modifier son profil sans
+    // changer son propre rôle. Promotion du premier admin via la console.
     match /utilisateurs/{id} {
       allow read: if estConnecte();
-      allow create, update: if estAdmin();
+      allow create: if estConnecte()
+        && request.auth.uid == id
+        && request.resource.data.role != 'admin';
+      allow update: if estAdmin()
+        || (request.auth.uid == id && request.resource.data.role == resource.data.role);
       allow delete: if false;
     }
 

@@ -1,6 +1,7 @@
 import { Link } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { authDisponible, deconnexion } from '@/services/authService';
 import { couleurs, espacements, rayons } from '@/theme/theme';
 
 const SECTIONS = [
@@ -27,6 +28,20 @@ export default function EcranParametres() {
           </Pressable>
         </Link>
       ))}
+
+      {authDisponible ? (
+        <Pressable
+          style={styles.deconnexion}
+          onPress={() =>
+            Alert.alert('Déconnexion', 'Se déconnecter de l\'application ?', [
+              { text: 'Annuler', style: 'cancel' },
+              { text: 'Se déconnecter', style: 'destructive', onPress: () => deconnexion() },
+            ])
+          }
+        >
+          <Text style={styles.deconnexionTexte}>Se déconnecter</Text>
+        </Pressable>
+      ) : null}
     </ScrollView>
   );
 }
@@ -39,4 +54,6 @@ const styles = StyleSheet.create({
   titre: { fontSize: 16, fontWeight: '700', color: couleurs.texte },
   desc: { fontSize: 13, color: couleurs.texteSecondaire, marginTop: 2 },
   chevron: { fontSize: 26, color: couleurs.texteSecondaire },
+  deconnexion: { marginTop: espacements.md, borderWidth: 1.5, borderColor: couleurs.danger, borderRadius: rayons.md, padding: espacements.md, alignItems: 'center' },
+  deconnexionTexte: { color: couleurs.danger, fontWeight: '700', fontSize: 15 },
 });
