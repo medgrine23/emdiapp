@@ -7,10 +7,10 @@
  * NB : la persistance Auth avec AsyncStorage doit être ajoutée quand le module
  * d'authentification sera implémenté (`initializeAuth` + `getReactNativePersistence`).
  */
-import { getApps, initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
+import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, type Auth } from 'firebase/auth';
+import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getStorage, type FirebaseStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -21,10 +21,20 @@ const firebaseConfig = {
   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
 
-export const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+// Firebase n'est initialisé QUE si un projet est configuré. En mode démo (sans
+// clés), les exports restent indéfinis — ils ne sont utilisés que par les
+// modules Firestore/Storage/Auth, eux-mêmes actifs uniquement en mode Firebase.
+const configure = Boolean(firebaseConfig.projectId);
+
+export const app: FirebaseApp | undefined = configure
+  ? getApps().length
+    ? getApps()[0]
+    : initializeApp(firebaseConfig)
+  : undefined;
+
+export const db = (configure ? getFirestore(app!) : undefined) as Firestore;
+export const storage = (configure ? getStorage(app!) : undefined) as FirebaseStorage;
 // NB : pour conserver la session entre deux lancements, remplacer par
 // `initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage) })`
 // (dépendance @react-native-async-storage/async-storage à ajouter).
-export const auth = getAuth(app);
+export const auth = (configure ? getAuth(app!) : undefined) as Auth;

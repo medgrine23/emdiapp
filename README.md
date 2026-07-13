@@ -33,9 +33,12 @@ Justification détaillée : [`docs/03-stack-technique.md`](docs/03-stack-techniq
 
 ## Démarrage
 
+> 🟢 **Grand débutant ?** Suivez le [**Guide de démarrage pas-à-pas**](GUIDE-DEMARRAGE.md)
+> (aperçu navigateur, Expo Go, ou APK Android).
+
 ```bash
 npm install
-cp .env.example .env   # renseigner les clés Firebase
+cp .env.example .env   # renseigner les clés Firebase (optionnel : mode démo sinon)
 npm start              # puis 'a' (Android), 'i' (iOS) ou 'w' (web)
 ```
 
