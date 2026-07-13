@@ -8,6 +8,7 @@
  * d'authentification sera implémenté (`initializeAuth` + `getReactNativePersistence`).
  */
 import { getApps, initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
@@ -23,3 +24,7 @@ const firebaseConfig = {
 export const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+// NB : pour conserver la session entre deux lancements, remplacer par
+// `initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage) })`
+// (dépendance @react-native-async-storage/async-storage à ajouter).
+export const auth = getAuth(app);

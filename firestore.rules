@@ -1,0 +1,92 @@
+rules_version = '2';
+
+// Règles de sécurité Firestore — source de vérité du contrôle d'accès.
+// Reflètent le RBAC (§3.8) et la machine à états du cycle de vie (§2) :
+//   - lecture réservée aux utilisateurs authentifiés ;
+//   - création/mise à jour soumises à la permission du module concerné ;
+//   - aucune suppression physique (soft-delete applicatif uniquement) ;
+//   - interdiction d'écrire sur une entité `archive` (sauf désarchivage) ;
+//   - passage à `annule` conditionné à un motif non vide.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function estConnecte() {
+      return request.auth != null;
+    }
+    function moi() {
+      return get(/databases/$(database)/documents/utilisateurs/$(request.auth.uid)).data;
+    }
+    function estAdmin() {
+      return estConnecte() && moi().role == 'admin';
+    }
+    function peut(module) {
+      return estAdmin() || (estConnecte() && (module in moi().permissions));
+    }
+
+    // Machine à états (§2)
+    function pasArchive() {
+      return resource == null
+        || resource.data.etat != 'archive'
+        || request.resource.data.etat == 'actif'; // désarchivage autorisé
+    }
+    function annulationValide() {
+      return request.resource.data.etat != 'annule'
+        || (request.resource.data.annulation.motif is string
+            && request.resource.data.annulation.motif.size() > 0);
+    }
+    function ecritureValide() {
+      return pasArchive() && annulationValide();
+    }
+    function gerer(module) {
+      return peut(module) && ecritureValide();
+    }
+
+    // Référentiel des utilisateurs : lecture pour tous les connectés, écriture admin.
+    match /utilisateurs/{id} {
+      allow read: if estConnecte();
+      allow create, update: if estAdmin();
+      allow delete: if false;
+    }
+
+    // Un bloc par module fonctionnel (§3). Jamais de suppression physique.
+    match /projets/{id}                { allow read: if estConnecte(); allow create, update: if gerer('projets');       allow delete: if false; }
+    match /clients/{id}                { allow read: if estConnecte(); allow create, update: if gerer('projets');       allow delete: if false; }
+
+    match /devis/{id}                  { allow read: if estConnecte(); allow create, update: if gerer('devis');         allow delete: if false; }
+    match /lignesDevis/{id}            { allow read: if estConnecte(); allow create, update: if gerer('devis');         allow delete: if false; }
+
+    match /tachesPlanning/{id}         { allow read: if estConnecte(); allow create, update: if gerer('planning');      allow delete: if false; }
+    match /dependancesTache/{id}       { allow read: if estConnecte(); allow create, update: if gerer('planning');      allow delete: if false; }
+
+    match /fournisseurs/{id}           { allow read: if estConnecte(); allow create, update: if gerer('achats');        allow delete: if false; }
+    match /demandesAchat/{id}          { allow read: if estConnecte(); allow create, update: if gerer('achats');        allow delete: if false; }
+    match /bonsCommande/{id}           { allow read: if estConnecte(); allow create, update: if gerer('achats');        allow delete: if false; }
+    match /lignesAchat/{id}            { allow read: if estConnecte(); allow create, update: if gerer('achats');        allow delete: if false; }
+    match /livraisons/{id}             { allow read: if estConnecte(); allow create, update: if gerer('achats');        allow delete: if false; }
+
+    match /factures/{id}               { allow read: if estConnecte(); allow create, update: if gerer('facturation');   allow delete: if false; }
+    match /lignesFacture/{id}          { allow read: if estConnecte(); allow create, update: if gerer('facturation');   allow delete: if false; }
+    match /paiements/{id}              { allow read: if estConnecte(); allow create, update: if gerer('facturation');   allow delete: if false; }
+    match /relances/{id}               { allow read: if estConnecte(); allow create, update: if gerer('facturation');   allow delete: if false; }
+
+    match /rapports/{id}               { allow read: if estConnecte(); allow create, update: if gerer('rapports');      allow delete: if false; }
+    match /rapportsTache/{id}          { allow read: if estConnecte(); allow create, update: if gerer('rapports');      allow delete: if false; }
+
+    match /documents/{id}              { allow read: if estConnecte(); allow create, update: if gerer('documentation'); allow delete: if false; }
+    match /liaisonsDocument/{id}       { allow read: if estConnecte(); allow create, update: if gerer('documentation'); allow delete: if false; }
+
+    match /conversations/{id}          { allow read: if estConnecte(); allow create, update: if gerer('chat');          allow delete: if false; }
+    match /messages/{id}               { allow read: if estConnecte(); allow create, update: if gerer('chat');          allow delete: if false; }
+    match /accusesLecture/{id}         { allow read: if estConnecte(); allow create, update: if estConnecte();          allow delete: if false; }
+
+    match /entreprise/{id}             { allow read: if estConnecte(); allow create, update: if gerer('parametres');    allow delete: if false; }
+    match /roles/{id}                  { allow read: if estConnecte(); allow create, update: if gerer('parametres');    allow delete: if false; }
+    match /taxes/{id}                  { allow read: if estConnecte(); allow create, update: if gerer('parametres');    allow delete: if false; }
+    match /parametresNotification/{id} { allow read: if estConnecte(); allow create, update: if estConnecte();          allow delete: if false; }
+
+    // Refus par défaut pour toute collection non listée.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

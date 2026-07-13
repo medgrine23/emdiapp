@@ -5,8 +5,9 @@ facturation, avec communication d'équipe temps réel.
 
 > **Les 9 modules fonctionnels sont implémentés** au-dessus des fondations (MCD, stack,
 > architecture). L'application tourne de bout en bout en **mode démo** (données en mémoire,
-> amorcées) ; le branchement Firestore/Storage/Auth (temps réel + upload des médias) reste
-> à finaliser via l'adaptateur balisé dans `src/services/repository.ts`.
+> amorcées) et **bascule automatiquement vers Firestore temps réel** dès que les clés
+> Firebase sont renseignées (`.env`). Adaptateur Firestore, Storage, service Auth et règles
+> de sécurité livrés — voir [`docs/05-integration-firebase.md`](docs/05-integration-firebase.md).
 
 ## Stack retenue
 
@@ -28,6 +29,7 @@ Justification détaillée : [`docs/03-stack-technique.md`](docs/03-stack-techniq
 | [`docs/02-modele-de-donnees.md`](docs/02-modele-de-donnees.md) | **MCD / schéma relationnel** (diagramme + collections Firestore) |
 | [`docs/03-stack-technique.md`](docs/03-stack-technique.md) | Choix technologiques argumentés |
 | [`docs/04-standards-crud.md`](docs/04-standards-crud.md) | Standards CRUD / soft-delete / archivage / annulation (§2) |
+| [`docs/05-integration-firebase.md`](docs/05-integration-firebase.md) | Bascule Firestore/Storage/Auth + règles de sécurité |
 
 ## Démarrage
 

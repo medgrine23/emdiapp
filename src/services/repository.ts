@@ -181,12 +181,22 @@ export const firebaseConfigure = Boolean(process.env.EXPO_PUBLIC_FIREBASE_PROJEC
 
 const registre = new Map<string, Repository<EntiteBase>>();
 
-/** Renvoie le repository (singleton) d'une collection. */
+/**
+ * Renvoie le repository (singleton) d'une collection.
+ * Firestore (temps réel) si un projet Firebase est configuré, mémoire sinon.
+ * Le module Firestore est chargé paresseusement pour ne pas initialiser Firebase
+ * en mode démo.
+ */
 export function getRepository<T extends EntiteBase>(collection: string): Repository<T> {
   let repo = registre.get(collection);
   if (!repo) {
-    // TODO: renvoyer FirestoreRepository quand `firebaseConfigure` est vrai.
-    repo = new MemoryRepository<EntiteBase>();
+    if (firebaseConfigure) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { FirestoreRepository } = require('@/services/firestoreRepository');
+      repo = new FirestoreRepository(collection) as Repository<EntiteBase>;
+    } else {
+      repo = new MemoryRepository<EntiteBase>();
+    }
     registre.set(collection, repo);
   }
   return repo as Repository<T>;
