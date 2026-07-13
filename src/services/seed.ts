@@ -9,6 +9,7 @@ import { fournisseursRepo } from '@/services/achatService';
 import { devisRepo, lignesDevisRepo, recalculerDevis } from '@/services/devisService';
 import { calculerDuree, dependancesRepo, tachesRepo } from '@/services/planningService';
 import { clientsRepo, projetsRepo } from '@/services/projetService';
+import { attacherDocument, documentsRepo } from '@/services/documentService';
 import { rapportsRepo, rapportsTacheRepo } from '@/services/rapportService';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import { StatutDevis, StatutProjet, StatutTache } from '@/types/models';
@@ -135,6 +136,22 @@ export async function amorcerDonnees(): Promise<void> {
     { rapportId: rapportA.id, projetId: projetA.id, tachePlanningId: idsTaches[1], avancementPct: 60, commentaire: 'Élévation des murs porteurs en cours.' },
     u
   );
+
+  // Documentation (GED) d'exemple.
+  await documentsRepo.creer(
+    { projetId: projetA.id, nom: 'Plan de masse RDC', type: 'plan', url: '', mimeType: 'application/pdf', tailleOctets: 2_400_000, uploadePar: u },
+    u
+  );
+  await documentsRepo.creer(
+    { projetId: projetA.id, nom: 'Permis de construire', type: 'permis', url: '', mimeType: 'application/pdf', tailleOctets: 850_000, uploadePar: u },
+    u
+  );
+  const photoJour = await documentsRepo.creer(
+    { projetId: projetA.id, nom: 'Photo dalle RDC', type: 'photo', url: '', mimeType: 'image/jpeg', tailleOctets: 1_200_000, uploadePar: u },
+    u
+  );
+  // La photo du jour est rattachée au rapport (liaison polymorphe §3.7).
+  await attacherDocument(photoJour.id, 'rapport', rapportA.id, projetA.id, u);
 
   await projetsRepo.creer(
     {

@@ -65,7 +65,7 @@ docs/                    Livrables (architecture, MCD, stack, standards)
 | **Achats** | ✅ Implémenté — bons de commande, contrôle budgétaire vs devis, livraisons |
 | **Facturation** | ✅ Implémenté — conversion devis→facture, lignes, paiements, relances |
 | **Rapports** | ✅ Implémenté — journalier/hebdo, météo, effectifs, MAJ avancement Planning |
-| Documentation (GED) | ⬜ Placeholder |
+| **Documentation (GED)** | ✅ Implémenté — registre typé, filtre projet, liaison polymorphe |
 | Chat interne | ⬜ Placeholder |
 | Paramètres | ⬜ Placeholder |
 
