@@ -34,6 +34,7 @@ export default function ModulesLayout() {
       <Stack.Screen name="rapports/index" options={{ title: 'Rapports' }} />
       <Stack.Screen name="rapports/[id]" options={{ title: 'Rapport' }} />
       <Stack.Screen name="rapports/formulaire" options={{ title: 'Nouveau rapport' }} />
+      <Stack.Screen name="rapports/export" options={{ title: 'Exporter un rapport' }} />
       <Stack.Screen name="documentation/index" options={{ title: 'Documentation' }} />
       <Stack.Screen name="documentation/[id]" options={{ title: 'Document' }} />
       <Stack.Screen name="documentation/formulaire" options={{ title: 'Nouveau document' }} />

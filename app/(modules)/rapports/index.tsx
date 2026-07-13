@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -16,6 +17,13 @@ export default function ListeRapports() {
 
   return (
     <View style={styles.conteneur}>
+      <Link href="/(modules)/rapports/export" asChild>
+        <Pressable style={styles.exportBar}>
+          <Feather name="download" size={18} color={couleurs.primaireClair} />
+          <Text style={styles.exportTexte}>Exporter un rapport (PDF / Excel)</Text>
+          <Feather name="chevron-right" size={20} color={couleurs.texteSecondaire} />
+        </Pressable>
+      </Link>
       <FlatList
         data={items}
         keyExtractor={(r) => r.id}
@@ -49,6 +57,8 @@ export default function ListeRapports() {
 
 const styles = StyleSheet.create({
   conteneur: { flex: 1, backgroundColor: couleurs.fond },
+  exportBar: { flexDirection: 'row', alignItems: 'center', gap: espacements.sm, backgroundColor: couleurs.surface, borderBottomWidth: 1, borderBottomColor: couleurs.bordure, paddingVertical: espacements.md, paddingHorizontal: espacements.md },
+  exportTexte: { flex: 1, fontSize: 14, fontWeight: '700', color: couleurs.primaireClair },
   liste: { padding: espacements.md, gap: espacements.sm },
   vide: { textAlign: 'center', color: couleurs.texteSecondaire, marginTop: espacements.xl },
   carte: { backgroundColor: couleurs.surface, borderRadius: rayons.md, borderWidth: 1, borderColor: couleurs.bordure, padding: espacements.md },
