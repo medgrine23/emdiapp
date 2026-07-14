@@ -19,7 +19,7 @@ export interface ModuleApp {
 export const MODULES: ModuleApp[] = [
   {
     cle: 'projets',
-    route: '/(modules)/projets',
+    route: '/projets',
     titre: 'Projets',
     description: 'Chantiers : localisation, client, budget, dates. Nœud central du système.',
     icone: 'home',
@@ -40,14 +40,14 @@ export const MODULES: ModuleApp[] = [
   },
   {
     cle: 'planning',
-    route: '/(modules)/planning',
+    route: '/planning',
     titre: 'Planning (Gantt)',
     description: 'Suivi temporel des tâches et gestion des dépendances.',
     icone: 'calendar',
   },
   {
     cle: 'achats',
-    route: '/(modules)/achats',
+    route: '/achats',
     titre: 'Achats',
     description: 'Demandes, bons de commande fournisseurs et livraisons.',
     icone: 'shopping-cart',
@@ -61,7 +61,7 @@ export const MODULES: ModuleApp[] = [
   },
   {
     cle: 'rapports',
-    route: '/(modules)/rapports',
+    route: '/rapports',
     titre: 'Rapports',
     description: 'Rapports journaliers/hebdo : météo, effectifs, avancement.',
     icone: 'clipboard',

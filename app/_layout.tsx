@@ -46,7 +46,7 @@ function RacineNavigation() {
         contentStyle: { backgroundColor: couleurs.fond },
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'EMDI Chantiers' }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(modules)" options={{ headerShown: false }} />
     </Stack>
   );
