@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BadgeEtat } from '@/components/BadgeEtat';
+import { Carte } from '@/components/Carte';
+import { Fab } from '@/components/Fab';
 import { GanttChart } from '@/components/GanttChart';
 import { useCollection } from '@/hooks/useRepository';
 import { COULEUR_STATUT, LIBELLE_STATUT_TACHE, tachesRepo } from '@/services/planningService';
@@ -24,7 +26,7 @@ export default function EcranPlanning() {
 
   return (
     <View style={styles.conteneur}>
-      <ScrollView contentContainerStyle={styles.contenu}>
+      <ScrollView contentContainerStyle={styles.contenu} showsVerticalScrollIndicator={false}>
         <Text style={styles.label}>Projet</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipsScroll}>
           <View style={styles.chips}>
@@ -44,29 +46,21 @@ export default function EcranPlanning() {
           <Text style={styles.vide}>Aucune tâche. Appuyez sur + pour en ajouter.</Text>
         ) : (
           tachesProjet.map((t) => (
-            <Link key={t.id} href={`/(modules)/planning/${t.id}`} asChild>
-              <Pressable style={styles.carte}>
-                <View style={styles.ligneHaut}>
-                  <View style={[styles.pastille, { backgroundColor: COULEUR_STATUT[t.statut] }]} />
-                  <Text style={styles.nom}>{t.nom}</Text>
-                  <BadgeEtat etat={t.etat} />
-                </View>
-                <Text style={styles.meta}>
-                  {formaterDate(t.dateDebut)} → {formaterDate(t.dateFin)} · {LIBELLE_STATUT_TACHE[t.statut]} · {t.avancementPct}%
-                </Text>
-              </Pressable>
-            </Link>
+            <Carte key={t.id} onPress={() => router.push(`/(modules)/planning/${t.id}`)} style={styles.carte}>
+              <View style={styles.ligneHaut}>
+                <View style={[styles.pastille, { backgroundColor: COULEUR_STATUT[t.statut] }]} />
+                <Text style={styles.nom}>{t.nom}</Text>
+                <BadgeEtat etat={t.etat} />
+              </View>
+              <Text style={styles.meta}>
+                {formaterDate(t.dateDebut)} → {formaterDate(t.dateFin)} · {LIBELLE_STATUT_TACHE[t.statut]} · {t.avancementPct}%
+              </Text>
+            </Carte>
           ))
         )}
       </ScrollView>
 
-      <Pressable
-        style={[styles.fab, !projetActif && styles.fabDesactive]}
-        onPress={() => projetActif && router.push(`/(modules)/planning/formulaire?projetId=${projetActif}`)}
-        disabled={!projetActif}
-      >
-        <Text style={styles.fabTexte}>+</Text>
-      </Pressable>
+      <Fab onPress={() => projetActif && router.push(`/(modules)/planning/formulaire?projetId=${projetActif}`)} disabled={!projetActif} />
     </View>
   );
 }
@@ -81,14 +75,11 @@ const styles = StyleSheet.create({
   chipActif: { backgroundColor: couleurs.primaire, borderColor: couleurs.primaire },
   chipTexte: { color: couleurs.texte, fontSize: 13 },
   chipTexteActif: { color: '#fff', fontWeight: '700' },
-  sectionTitre: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', color: couleurs.primaire, marginTop: espacements.lg, marginBottom: espacements.sm },
+  sectionTitre: { fontSize: 12, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.6, color: couleurs.texteSecondaire, marginTop: espacements.lg, marginBottom: espacements.sm },
   vide: { color: couleurs.texteSecondaire, textAlign: 'center', marginTop: espacements.md },
-  carte: { backgroundColor: couleurs.surface, borderRadius: rayons.md, borderWidth: 1, borderColor: couleurs.bordure, padding: espacements.md, marginBottom: espacements.sm },
+  carte: { marginBottom: espacements.sm, padding: espacements.md },
   ligneHaut: { flexDirection: 'row', alignItems: 'center', gap: espacements.sm },
   pastille: { width: 10, height: 10, borderRadius: 5 },
   nom: { fontSize: 16, fontWeight: '700', color: couleurs.texte, flex: 1 },
   meta: { fontSize: 13, color: couleurs.texteSecondaire, marginTop: espacements.xs },
-  fab: { position: 'absolute', right: espacements.lg, bottom: espacements.lg, width: 56, height: 56, borderRadius: 28, backgroundColor: couleurs.accent, alignItems: 'center', justifyContent: 'center', elevation: 4 },
-  fabDesactive: { backgroundColor: couleurs.bordure },
-  fabTexte: { color: couleurs.surAccent, fontSize: 30, lineHeight: 34, fontWeight: '700' },
 });

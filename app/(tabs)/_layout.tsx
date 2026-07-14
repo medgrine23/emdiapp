@@ -15,16 +15,21 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: couleurs.surface,
           borderTopColor: couleurs.bordure,
-          height: 62,
-          paddingTop: 6,
-          paddingBottom: 8,
+          height: 64,
+          paddingTop: 8,
+          paddingBottom: 10,
+          shadowColor: '#0B2A38',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 8,
         },
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
     >
       <Tabs.Screen
         name="index"
-        options={{ title: 'Accueil', tabBarIcon: ({ color, size }) => <Feather name="home" size={size} color={color} /> }}
+        options={{ headerShown: false, title: 'Accueil', tabBarIcon: ({ color, size }) => <Feather name="home" size={size} color={color} /> }}
       />
       <Tabs.Screen
         name="projets"

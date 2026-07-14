@@ -31,7 +31,32 @@ export const espacements = {
 };
 
 export const rayons = {
-  sm: 6,
-  md: 12,
-  lg: 20,
+  sm: 10,
+  md: 16,
+  lg: 22,
+};
+
+/** Ombres douces pour donner de la profondeur (rendu premium). */
+export const ombres = {
+  douce: {
+    shadowColor: '#0B2A38',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  carte: {
+    shadowColor: '#0B2A38',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.09,
+    shadowRadius: 14,
+    elevation: 3,
+  },
+  flottant: {
+    shadowColor: '#0B2A38',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 7,
+  },
 };
