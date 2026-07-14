@@ -200,5 +200,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: espacements.lg,
   },
-  validerTexte: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  validerTexte: { color: couleurs.surAccent, fontWeight: '700', fontSize: 16 },
 });

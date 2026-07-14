@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   metreEntete: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   metreTitre: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', color: couleurs.primaire },
   metreSous: { fontSize: 12, color: couleurs.texteSecondaire, marginTop: 2, marginBottom: espacements.sm },
-  detacher: { color: couleurs.accent, fontWeight: '700', fontSize: 12 },
+  detacher: { color: couleurs.primaireClair, fontWeight: '700', fontSize: 12 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: espacements.xs, marginBottom: espacements.xs },
   chip: { borderWidth: 1, borderColor: couleurs.bordure, borderRadius: rayons.lg, paddingHorizontal: espacements.md, paddingVertical: 5, backgroundColor: couleurs.surface },
   chipActif: { backgroundColor: couleurs.primaire, borderColor: couleurs.primaire },
@@ -175,5 +175,5 @@ const styles = StyleSheet.create({
   secondaireTexte: { color: couleurs.texte, fontWeight: '600' },
   primaire: { backgroundColor: couleurs.accent },
   desactive: { backgroundColor: couleurs.bordure },
-  primaireTexte: { color: '#fff', fontWeight: '700' },
+  primaireTexte: { color: couleurs.surAccent, fontWeight: '700' },
 });

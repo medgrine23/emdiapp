@@ -204,5 +204,5 @@ const styles = StyleSheet.create({
   ligne: { flexDirection: 'row', gap: espacements.sm },
   moitie: { flex: 1 },
   valider: { backgroundColor: couleurs.accent, borderRadius: rayons.md, padding: espacements.md, alignItems: 'center', marginTop: espacements.lg },
-  validerTexte: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  validerTexte: { color: couleurs.surAccent, fontWeight: '700', fontSize: 16 },
 });

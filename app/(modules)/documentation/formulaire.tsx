@@ -161,5 +161,5 @@ const styles = StyleSheet.create({
   chipTexte: { color: couleurs.texte, fontSize: 13 },
   chipTexteActif: { color: '#fff', fontWeight: '700' },
   valider: { backgroundColor: couleurs.accent, borderRadius: rayons.md, padding: espacements.md, alignItems: 'center', marginTop: espacements.lg },
-  validerTexte: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  validerTexte: { color: couleurs.surAccent, fontWeight: '700', fontSize: 16 },
 });

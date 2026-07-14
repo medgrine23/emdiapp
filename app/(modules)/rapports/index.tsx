@@ -67,5 +67,5 @@ const styles = StyleSheet.create({
   date: { fontSize: 13, color: couleurs.texteSecondaire, marginTop: 2 },
   meta: { fontSize: 13, color: couleurs.texteSecondaire, marginTop: espacements.xs },
   fab: { position: 'absolute', right: espacements.lg, bottom: espacements.lg, width: 56, height: 56, borderRadius: 28, backgroundColor: couleurs.accent, alignItems: 'center', justifyContent: 'center', elevation: 4 },
-  fabTexte: { color: '#fff', fontSize: 30, lineHeight: 34, fontWeight: '700' },
+  fabTexte: { color: couleurs.surAccent, fontSize: 30, lineHeight: 34, fontWeight: '700' },
 });

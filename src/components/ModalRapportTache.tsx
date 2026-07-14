@@ -116,5 +116,5 @@ const styles = StyleSheet.create({
   secondaireTexte: { color: couleurs.texte, fontWeight: '600' },
   primaire: { backgroundColor: couleurs.accent },
   desactive: { backgroundColor: couleurs.bordure },
-  primaireTexte: { color: '#fff', fontWeight: '700' },
+  primaireTexte: { color: couleurs.surAccent, fontWeight: '700' },
 });

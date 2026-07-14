@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   sectionEntete: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: espacements.lg },
   sectionTitre: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', color: couleurs.primaire, marginTop: espacements.lg, marginBottom: espacements.sm },
   info: { fontSize: 12, fontStyle: 'italic', color: couleurs.texteSecondaire, marginBottom: espacements.sm },
-  ajouter: { color: couleurs.accent, fontWeight: '700', fontSize: 14 },
+  ajouter: { color: couleurs.primaireClair, fontWeight: '700', fontSize: 14 },
   videSection: { color: couleurs.texteSecondaire, padding: espacements.sm, textAlign: 'center' },
   ligne: { flexDirection: 'row', alignItems: 'center', paddingVertical: espacements.sm, paddingHorizontal: espacements.xs, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: couleurs.bordure },
   ligneDesignation: { fontSize: 15, color: couleurs.texte, fontWeight: '600' },

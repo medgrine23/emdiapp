@@ -78,5 +78,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 4,
   },
-  fabTexte: { color: '#fff', fontSize: 30, lineHeight: 34, fontWeight: '700' },
+  fabTexte: { color: couleurs.surAccent, fontSize: 30, lineHeight: 34, fontWeight: '700' },
 });

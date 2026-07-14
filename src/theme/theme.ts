@@ -1,18 +1,25 @@
-/** Palette et espacements de l'application (thème clair affiné — voir maquette). */
+/**
+ * Palette de la marque MDI Build (bleu pétrole + bleu profond + jaune accent).
+ * `accent` (jaune) s'utilise en FOND de bouton ; le texte dessus est `surAccent`
+ * (bleu profond). Pour une action en TEXTE/icône sur fond clair, préférer
+ * `primaireClair` (le jaune sur blanc serait illisible).
+ */
 export const couleurs = {
-  primaire: '#0B3D5C',
-  primaireClair: '#1B6C99',
-  accent: '#E8900A',
-  fond: '#EAEEF2',
+  primaire: '#0F5566', // bleu pétrole
+  primaireClair: '#1C7C94', // pétrole clair (liens, icônes)
+  primaireFonce: '#0B2A38', // bleu profond
+  accent: '#F2C14E', // jaune
+  surAccent: '#0B2A38', // texte/icône sur le jaune
+  fond: '#F1F4F6',
   surface: '#FFFFFF',
   surface2: '#F4F7F9',
-  texte: '#14232E',
-  texteSecondaire: '#55697A',
-  bordure: '#D7E0E7',
+  texte: '#0E2A36',
+  texteSecondaire: '#5B7180',
+  bordure: '#DCE4E9',
   neutre: '#64798A',
-  succes: '#2E7D32',
+  succes: '#2E9E63',
   danger: '#C62828',
-  alerte: '#E8900A',
+  alerte: '#E08A2B',
 };
 
 export const espacements = {

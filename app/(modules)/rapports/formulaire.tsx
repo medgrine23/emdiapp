@@ -158,5 +158,5 @@ const styles = StyleSheet.create({
   switchBox: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: espacements.md + 2 },
   switchLabel: { fontSize: 14, color: couleurs.texte, fontWeight: '600' },
   valider: { backgroundColor: couleurs.accent, borderRadius: rayons.md, padding: espacements.md, alignItems: 'center', marginTop: espacements.lg },
-  validerTexte: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  validerTexte: { color: couleurs.surAccent, fontWeight: '700', fontSize: 16 },
 });

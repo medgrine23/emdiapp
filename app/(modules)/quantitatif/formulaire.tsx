@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   chipTexteActif: { color: '#fff', fontWeight: '700' },
   sectionEntete: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: espacements.lg, marginBottom: espacements.sm },
   sectionTitre: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', color: couleurs.primaire },
-  ajouter: { color: couleurs.accent, fontWeight: '700', fontSize: 14 },
+  ajouter: { color: couleurs.primaireClair, fontWeight: '700', fontSize: 14 },
   carte: { backgroundColor: couleurs.surface, borderRadius: rayons.md, borderWidth: 1, borderColor: couleurs.bordure, padding: espacements.sm },
   videSection: { color: couleurs.texteSecondaire, padding: espacements.sm, textAlign: 'center' },
   ligneOuv: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: espacements.sm, paddingHorizontal: espacements.xs, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: couleurs.bordure },
@@ -172,5 +172,5 @@ const styles = StyleSheet.create({
   apMetValeur: { fontSize: 15, fontWeight: '800', color: couleurs.primaire, marginTop: 2 },
   apercuNote: { fontSize: 11, fontStyle: 'italic', color: couleurs.texteSecondaire, marginTop: espacements.sm },
   valider: { backgroundColor: couleurs.accent, borderRadius: rayons.md, padding: espacements.md, alignItems: 'center', marginTop: espacements.lg },
-  validerTexte: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  validerTexte: { color: couleurs.surAccent, fontWeight: '700', fontSize: 16 },
 });

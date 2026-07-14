@@ -65,5 +65,5 @@ const styles = StyleSheet.create({
   statut: { fontSize: 13, color: couleurs.primaireClair, fontWeight: '600' },
   total: { fontSize: 15, fontWeight: '700', color: couleurs.texte },
   fab: { position: 'absolute', right: espacements.lg, bottom: espacements.lg, width: 56, height: 56, borderRadius: 28, backgroundColor: couleurs.accent, alignItems: 'center', justifyContent: 'center', elevation: 4 },
-  fabTexte: { color: '#fff', fontSize: 30, lineHeight: 34, fontWeight: '700' },
+  fabTexte: { color: couleurs.surAccent, fontSize: 30, lineHeight: 34, fontWeight: '700' },
 });

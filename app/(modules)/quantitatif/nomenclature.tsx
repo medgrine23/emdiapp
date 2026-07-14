@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   surf: { fontSize: 15, fontWeight: '700', color: couleurs.primaire },
   astuce: { fontSize: 12, fontStyle: 'italic', color: couleurs.texteSecondaire, marginTop: espacements.xs },
   fab: { position: 'absolute', right: espacements.lg, bottom: espacements.lg, width: 56, height: 56, borderRadius: 28, backgroundColor: couleurs.accent, alignItems: 'center', justifyContent: 'center', elevation: 4 },
-  fabTexte: { color: '#fff', fontSize: 30, lineHeight: 34, fontWeight: '700' },
+  fabTexte: { color: couleurs.surAccent, fontSize: 30, lineHeight: 34, fontWeight: '700' },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
   boite: { backgroundColor: couleurs.surface, borderTopLeftRadius: rayons.lg, borderTopRightRadius: rayons.lg, padding: espacements.lg },
   titre: { fontSize: 18, fontWeight: '700', color: couleurs.texte, marginBottom: espacements.sm },
@@ -122,5 +122,5 @@ const styles = StyleSheet.create({
   secondaire: { backgroundColor: couleurs.fond },
   secondaireTexte: { color: couleurs.texte, fontWeight: '600' },
   primaire: { backgroundColor: couleurs.accent },
-  primaireTexte: { color: '#fff', fontWeight: '700' },
+  primaireTexte: { color: couleurs.surAccent, fontWeight: '700' },
 });

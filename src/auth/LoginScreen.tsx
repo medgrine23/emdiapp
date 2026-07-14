@@ -66,7 +66,7 @@ export function LoginScreen() {
         <TextInput style={styles.champ} value={motDePasse} onChangeText={setMotDePasse} placeholder="••••••••" secureTextEntry />
 
         <Pressable style={[styles.bouton, chargement && styles.boutonOff]} onPress={valider} disabled={chargement}>
-          {chargement ? <ActivityIndicator color="#fff" /> : <Text style={styles.boutonTexte}>{mode === 'connexion' ? 'Se connecter' : "S'inscrire"}</Text>}
+          {chargement ? <ActivityIndicator color={couleurs.surAccent} /> : <Text style={styles.boutonTexte}>{mode === 'connexion' ? 'Se connecter' : "S'inscrire"}</Text>}
         </Pressable>
 
         <Pressable onPress={() => { setMode(mode === 'connexion' ? 'inscription' : 'connexion'); setErreur(null); }}>
@@ -107,6 +107,6 @@ const styles = StyleSheet.create({
   champ: { backgroundColor: couleurs.fond, borderWidth: 1, borderColor: couleurs.bordure, borderRadius: rayons.sm, padding: espacements.sm, color: couleurs.texte, fontSize: 15 },
   bouton: { backgroundColor: couleurs.accent, borderRadius: rayons.md, padding: espacements.md, alignItems: 'center', marginTop: espacements.lg },
   boutonOff: { opacity: 0.7 },
-  boutonTexte: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  boutonTexte: { color: couleurs.surAccent, fontWeight: '700', fontSize: 16 },
   bascule: { color: couleurs.primaireClair, textAlign: 'center', marginTop: espacements.md, fontWeight: '600' },
 });

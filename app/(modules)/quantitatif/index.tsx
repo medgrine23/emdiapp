@@ -68,7 +68,7 @@ export default function ListePieces() {
         onPress={() => projetActif && router.push(`/(modules)/quantitatif/formulaire?projetId=${projetActif}`)}
         disabled={!projetActif}
       >
-        <Feather name="plus" size={26} color="#fff" />
+        <Feather name="plus" size={26} color={couleurs.surAccent} />
       </Pressable>
     </View>
   );
