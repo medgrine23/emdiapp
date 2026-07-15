@@ -1,13 +1,21 @@
 /**
  * Thème de la marque MDI Build (bleu pétrole + bleu profond + jaune accent).
  *
- * Deux palettes — claire et sombre — sont définies. L'app choisit
- * automatiquement selon le thème du système (réglage clair/sombre du
- * téléphone) au démarrage. `accent` (jaune) s'utilise en FOND de bouton ;
- * le texte dessus est `surAccent`. Pour une action en TEXTE/icône, préférer
- * `primaireClair` (le jaune sur fond clair serait illisible).
+ * Deux palettes — claire et sombre — sont définies. Le choix appliqué dépend
+ * du réglage enregistré dans Paramètres → Thème & apparence :
+ *   • 'auto'   → suit le thème du système (réglage clair/sombre du téléphone) ;
+ *   • 'clair'  → force la palette claire ;
+ *   • 'sombre' → force la palette sombre.
+ * Le choix est lu de façon SYNCHRONE au démarrage (voir services/preferences),
+ * si bien qu'un changement s'applique au prochain lancement de l'application.
+ *
+ * `accent` (jaune) s'utilise en FOND de bouton ; le texte dessus est
+ * `surAccent`. Pour une action en TEXTE/icône, préférer `primaireClair`
+ * (le jaune sur fond clair serait illisible).
  */
 import { Appearance } from 'react-native';
+
+import { getChoixTheme } from '@/services/preferences';
 
 export interface Palette {
   primaire: string;
@@ -63,8 +71,19 @@ export const paletteSombre: Palette = {
   alerte: '#E8A54A',
 };
 
-/** Schéma actif (suit le système au démarrage ; 'automatic' dans app.json). */
-export const schemaActif: 'light' | 'dark' = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+/**
+ * Schéma actif au démarrage : le choix enregistré ('clair'/'sombre') prime,
+ * sinon on suit le système ('auto'). Lu une seule fois à l'import.
+ */
+const choixTheme = getChoixTheme();
+export const schemaActif: 'light' | 'dark' =
+  choixTheme === 'sombre'
+    ? 'dark'
+    : choixTheme === 'clair'
+      ? 'light'
+      : Appearance.getColorScheme() === 'dark'
+        ? 'dark'
+        : 'light';
 
 export const couleurs: Palette = schemaActif === 'dark' ? paletteSombre : paletteClaire;
 

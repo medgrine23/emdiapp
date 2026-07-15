@@ -9,7 +9,8 @@ import { couleurs, espacements, rayons } from '@/theme/theme';
 type NomIcone = ComponentProps<typeof Feather>['name'];
 
 const SECTIONS: { route: string; icone: NomIcone; titre: string; desc: string }[] = [
-  { route: '/(modules)/parametres/entreprise', icone: 'briefcase', titre: 'Entreprise', desc: 'Nom, adresse, SIRET, TVA' },
+  { route: '/(modules)/parametres/entreprise', icone: 'briefcase', titre: 'Entreprise', desc: 'Raison sociale, NIF, NIS, RC…' },
+  { route: '/(modules)/parametres/theme', icone: 'droplet', titre: 'Thème & apparence', desc: 'Clair, sombre ou automatique' },
   { route: '/(modules)/parametres/roles', icone: 'lock', titre: 'Rôles & permissions', desc: 'Droits d\'accès par profil' },
   { route: '/(modules)/parametres/taxes', icone: 'percent', titre: 'Taxes', desc: 'Taux de TVA et taxes' },
   { route: '/(modules)/parametres/clients', icone: 'user', titre: 'Clients', desc: 'Référentiel des clients' },
