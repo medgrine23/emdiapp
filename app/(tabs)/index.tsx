@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Carte } from '@/components/Carte';
@@ -51,9 +51,7 @@ export default function Accueil() {
   return (
     <View style={styles.conteneur}>
       <View style={[styles.entete, { paddingTop: insets.top + espacements.md }]}>
-        <View style={styles.logo}>
-          <Feather name="home" size={20} color={couleurs.surAccent} />
-        </View>
+        <Image source={require('../../assets/logo.jpg')} style={styles.logo} resizeMode="cover" />
         <View style={{ flex: 1 }}>
           <Text style={styles.salut}>Bonjour 👋</Text>
           <Text style={styles.entreprise}>{entreprise}</Text>
@@ -129,7 +127,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 26,
     borderBottomRightRadius: 26,
   },
-  logo: { width: 44, height: 44, borderRadius: 12, backgroundColor: couleurs.accent, alignItems: 'center', justifyContent: 'center' },
+  logo: { width: 46, height: 46, borderRadius: 12 },
   salut: { color: 'rgba(255,255,255,0.8)', fontSize: 13 },
   entreprise: { color: '#fff', fontSize: 20, fontWeight: '800', letterSpacing: -0.3 },
   corps: { flex: 1 },

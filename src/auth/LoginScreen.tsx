@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -47,7 +48,8 @@ export function LoginScreen() {
   return (
     <KeyboardAvoidingView style={styles.conteneur} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.carte}>
-        <Text style={styles.titre}>EMDI Chantiers</Text>
+        <Image source={require('../../assets/logo.jpg')} style={styles.logo} resizeMode="cover" />
+        <Text style={styles.titre}>MDI Build</Text>
         <Text style={styles.sous}>{mode === 'connexion' ? 'Connexion' : 'Créer un compte'}</Text>
 
         {erreur ? <Text style={styles.erreur}>{erreur}</Text> : null}
@@ -100,6 +102,7 @@ function traduireErreur(e: unknown): string {
 const styles = StyleSheet.create({
   conteneur: { flex: 1, backgroundColor: couleurs.primaire, justifyContent: 'center', padding: espacements.lg },
   carte: { backgroundColor: couleurs.surface, borderRadius: rayons.lg, padding: espacements.lg },
+  logo: { width: 76, height: 76, borderRadius: 18, alignSelf: 'center', marginBottom: espacements.sm },
   titre: { fontSize: 24, fontWeight: '800', color: couleurs.primaire, textAlign: 'center' },
   sous: { fontSize: 15, color: couleurs.texteSecondaire, textAlign: 'center', marginTop: espacements.xs, marginBottom: espacements.md },
   erreur: { color: couleurs.danger, backgroundColor: `${couleurs.danger}10`, padding: espacements.sm, borderRadius: rayons.sm, marginBottom: espacements.sm, textAlign: 'center' },

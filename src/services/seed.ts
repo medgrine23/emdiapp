@@ -183,7 +183,7 @@ export async function amorcerDonnees(): Promise<void> {
 
   // Paramètres : entreprise, taxes et rôles par défaut.
   await entrepriseRepo.creer(
-    { nom: 'EMDI Construction', adresse: 'Béjaïa, Algérie', numeroTVA: 'DZ0000000000', telephone: '+213 34 00 00 01', email: 'contact@emdi.dz' },
+    { nom: 'MDI Build', adresse: 'Annaba, Algérie', numeroTVA: 'DZ0000000000', telephone: '+213 38 00 00 01', email: 'contact@mdibuild.dz' },
     u
   );
   await taxesRepo.creer({ nom: 'TVA 19 %', taux: 19, parDefaut: true }, u);
