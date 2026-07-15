@@ -176,21 +176,35 @@ export class MemoryRepository<T extends EntiteBase> implements Repository<T> {
   }
 }
 
-/** Vrai si un projet Firebase est configuré (bascule vers Firestore à implémenter). */
+/** Vrai si un projet Firebase est configuré (stockage Firestore). */
 export const firebaseConfigure = Boolean(process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID);
+
+/** Vrai si un projet Supabase est configuré (stockage Supabase, prioritaire). */
+export const supabaseConfigure = Boolean(
+  process.env.EXPO_PUBLIC_SUPABASE_URL && process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
+);
+
+/** Vrai si un backend réel (Supabase ou Firestore) est configuré. */
+export const backendConfigure = supabaseConfigure || firebaseConfigure;
 
 const registre = new Map<string, Repository<EntiteBase>>();
 
 /**
- * Renvoie le repository (singleton) d'une collection.
- * Firestore (temps réel) si un projet Firebase est configuré, mémoire sinon.
- * Le module Firestore est chargé paresseusement pour ne pas initialiser Firebase
- * en mode démo.
+ * Renvoie le repository (singleton) d'une collection. Ordre de priorité :
+ *   1. Supabase (temps réel) si un projet Supabase est configuré ;
+ *   2. Firestore (temps réel) si un projet Firebase est configuré ;
+ *   3. mémoire (mode démo/dev) sinon.
+ * Les modules backend sont chargés paresseusement pour ne rien initialiser en
+ * mode démo.
  */
 export function getRepository<T extends EntiteBase>(collection: string): Repository<T> {
   let repo = registre.get(collection);
   if (!repo) {
-    if (firebaseConfigure) {
+    if (supabaseConfigure) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { SupabaseRepository } = require('@/services/supabaseRepository');
+      repo = new SupabaseRepository(collection) as Repository<EntiteBase>;
+    } else if (firebaseConfigure) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { FirestoreRepository } = require('@/services/firestoreRepository');
       repo = new FirestoreRepository(collection) as Repository<EntiteBase>;

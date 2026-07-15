@@ -14,7 +14,7 @@ import { conversationsRepo, envoyerPartage, envoyerTexte } from '@/services/chat
 import { attacherDocument, documentsRepo } from '@/services/documentService';
 import { entrepriseRepo, rolesRepo, taxesRepo } from '@/services/parametreService';
 import { rapportsRepo, rapportsTacheRepo } from '@/services/rapportService';
-import { firebaseConfigure } from '@/services/repository';
+import { backendConfigure } from '@/services/repository';
 import { RoleUtilisateur } from '@/types/models';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import { StatutDevis, StatutProjet, StatutTache } from '@/types/models';
@@ -25,8 +25,9 @@ export async function amorcerDonnees(): Promise<void> {
   if (fait) return;
   fait = true;
 
-  // En mode Firebase, on n'amorce pas de données de démo (backend réel).
-  if (firebaseConfigure) return;
+  // En présence d'un backend réel (Supabase ou Firebase), on n'amorce pas de
+  // données de démo.
+  if (backendConfigure) return;
 
   const existants = await projetsRepo.lister();
   if (existants.length > 0) return;
