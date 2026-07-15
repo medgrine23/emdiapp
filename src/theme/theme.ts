@@ -1,15 +1,38 @@
 /**
- * Palette de la marque MDI Build (bleu pétrole + bleu profond + jaune accent).
- * `accent` (jaune) s'utilise en FOND de bouton ; le texte dessus est `surAccent`
- * (bleu profond). Pour une action en TEXTE/icône sur fond clair, préférer
- * `primaireClair` (le jaune sur blanc serait illisible).
+ * Thème de la marque MDI Build (bleu pétrole + bleu profond + jaune accent).
+ *
+ * Deux palettes — claire et sombre — sont définies. L'app choisit
+ * automatiquement selon le thème du système (réglage clair/sombre du
+ * téléphone) au démarrage. `accent` (jaune) s'utilise en FOND de bouton ;
+ * le texte dessus est `surAccent`. Pour une action en TEXTE/icône, préférer
+ * `primaireClair` (le jaune sur fond clair serait illisible).
  */
-export const couleurs = {
-  primaire: '#0F5566', // bleu pétrole
-  primaireClair: '#1C7C94', // pétrole clair (liens, icônes)
-  primaireFonce: '#0B2A38', // bleu profond
-  accent: '#F2C14E', // jaune
-  surAccent: '#0B2A38', // texte/icône sur le jaune
+import { Appearance } from 'react-native';
+
+export interface Palette {
+  primaire: string;
+  primaireClair: string;
+  primaireFonce: string;
+  accent: string;
+  surAccent: string;
+  fond: string;
+  surface: string;
+  surface2: string;
+  texte: string;
+  texteSecondaire: string;
+  bordure: string;
+  neutre: string;
+  succes: string;
+  danger: string;
+  alerte: string;
+}
+
+export const paletteClaire: Palette = {
+  primaire: '#0F5566',
+  primaireClair: '#1C7C94',
+  primaireFonce: '#0B2A38',
+  accent: '#F2C14E',
+  surAccent: '#0B2A38',
   fond: '#F1F4F6',
   surface: '#FFFFFF',
   surface2: '#F4F7F9',
@@ -21,6 +44,29 @@ export const couleurs = {
   danger: '#C62828',
   alerte: '#E08A2B',
 };
+
+export const paletteSombre: Palette = {
+  primaire: '#12667C', // pétrole (en-têtes)
+  primaireClair: '#43A7C4', // liens / icônes sur fond sombre
+  primaireFonce: '#0A1A24',
+  accent: '#F2C14E', // jaune (identique)
+  surAccent: '#0B2A38', // texte foncé sur le jaune
+  fond: '#0B1720', // fond sombre (navy-noir)
+  surface: '#13232E',
+  surface2: '#1B2E3A',
+  texte: '#E7EEF3',
+  texteSecondaire: '#9FB2BF',
+  bordure: '#263A48',
+  neutre: '#7D92A2',
+  succes: '#3FB37A',
+  danger: '#EF5350',
+  alerte: '#E8A54A',
+};
+
+/** Schéma actif (suit le système au démarrage ; 'automatic' dans app.json). */
+export const schemaActif: 'light' | 'dark' = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+
+export const couleurs: Palette = schemaActif === 'dark' ? paletteSombre : paletteClaire;
 
 export const espacements = {
   xs: 4,
@@ -39,23 +85,23 @@ export const rayons = {
 /** Ombres douces pour donner de la profondeur (rendu premium). */
 export const ombres = {
   douce: {
-    shadowColor: '#0B2A38',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: schemaActif === 'dark' ? 0.25 : 0.06,
     shadowRadius: 6,
     elevation: 2,
   },
   carte: {
-    shadowColor: '#0B2A38',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.09,
+    shadowOpacity: schemaActif === 'dark' ? 0.3 : 0.09,
     shadowRadius: 14,
     elevation: 3,
   },
   flottant: {
-    shadowColor: '#0B2A38',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
+    shadowOpacity: schemaActif === 'dark' ? 0.4 : 0.25,
     shadowRadius: 12,
     elevation: 7,
   },
