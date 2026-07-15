@@ -86,7 +86,10 @@ export interface Client extends EntiteBase {
   email?: string;
   telephone?: string;
   adresse?: string;
-  siret?: string;
+  // Identifiants légaux (Algérie) — le NIF de l'acheteur est requis entre
+  // assujettis TVA (LF 2022) pour la déduction de TVA.
+  nif?: string;
+  rc?: string;
 }
 
 export interface Fournisseur extends EntiteBase {
@@ -416,14 +419,30 @@ export interface LiaisonDocument {
 /* 3.8 — Module Paramètres                                            */
 /* ------------------------------------------------------------------ */
 
+export type FormeJuridique = 'EI' | 'EURL' | 'SARL' | 'SPA' | 'SNC' | 'SCS' | 'autre';
+
+/**
+ * Entreprise émettrice — mentions légales d'une facture conforme en Algérie
+ * (Décret exécutif n° 05-468) : NIF, NIS, RC, article d'imposition, forme
+ * juridique, capital, RIB, etc.
+ */
 export interface Entreprise extends EntiteBase {
-  nom: string;
+  nom: string; // raison sociale / dénomination
+  formeJuridique?: FormeJuridique;
+  capitalSocial?: number;
+  activite?: string;
   logoUrl?: string;
   adresse?: string;
-  siret?: string;
-  numeroTVA?: string;
   telephone?: string;
   email?: string;
+  // Identifiants légaux (Algérie)
+  nif?: string; // n° d'identification fiscale (15 chiffres)
+  nis?: string; // n° d'identification statistique
+  rc?: string; // registre de commerce
+  articleImposition?: string; // n° d'article d'imposition
+  // Coordonnées bancaires
+  banque?: string;
+  rib?: string;
 }
 
 export interface Role extends EntiteBase {

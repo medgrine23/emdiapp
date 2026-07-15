@@ -11,11 +11,22 @@ import { getRepository } from '@/services/repository';
 import { UTILISATEUR_COURANT_ID } from '@/services/session';
 import {
   Entreprise,
+  FormeJuridique,
   ParametreNotification,
   Role,
   RoleUtilisateur,
   Taxe,
 } from '@/types/models';
+
+export const LIBELLE_FORME_JURIDIQUE: Record<FormeJuridique, string> = {
+  EI: 'Entreprise individuelle',
+  EURL: 'EURL',
+  SARL: 'SARL',
+  SPA: 'SPA',
+  SNC: 'SNC',
+  SCS: 'SCS',
+  autre: 'Autre',
+};
 
 export { clientsRepo, fournisseursRepo };
 

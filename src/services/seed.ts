@@ -34,11 +34,11 @@ export async function amorcerDonnees(): Promise<void> {
   const u = UTILISATEUR_COURANT_ID;
 
   const clientA = await clientsRepo.creer(
-    { nom: 'Mairie de Béjaïa', type: 'collectivite', email: 'contact@bejaia.dz', telephone: '+213 34 00 00 00', adresse: 'Béjaïa' },
+    { nom: 'Mairie de Béjaïa', type: 'collectivite', email: 'contact@bejaia.dz', telephone: '+213 34 00 00 00', adresse: 'Béjaïa', nif: '', rc: '' },
     u
   );
   const clientB = await clientsRepo.creer(
-    { nom: 'SARL Amimer Énergie', type: 'entreprise', email: 'projets@amimer.dz', telephone: '+213 34 11 11 11', adresse: 'Ihaddaden, Béjaïa' },
+    { nom: 'SARL Amimer Énergie', type: 'entreprise', email: 'projets@amimer.dz', telephone: '+213 34 11 11 11', adresse: 'Ihaddaden, Béjaïa', nif: '098765432109876', rc: '06 B 1234567' },
     u
   );
 
@@ -183,7 +183,21 @@ export async function amorcerDonnees(): Promise<void> {
 
   // Paramètres : entreprise, taxes et rôles par défaut.
   await entrepriseRepo.creer(
-    { nom: 'MDI Build', adresse: 'Annaba, Algérie', numeroTVA: 'DZ0000000000', telephone: '+213 38 00 00 01', email: 'contact@mdibuild.dz' },
+    {
+      nom: 'MDI Build',
+      formeJuridique: 'SARL',
+      capitalSocial: 1_000_000,
+      activite: 'Bâtiment et travaux publics',
+      adresse: 'Zone industrielle, Annaba, Algérie',
+      telephone: '+213 38 00 00 01',
+      email: 'contact@mdibuild.dz',
+      nif: '000000000000000',
+      nis: '0000000000000',
+      rc: '23 B 0000000',
+      articleImposition: '00000000000',
+      banque: 'BEA Annaba',
+      rib: '00000000000000000000',
+    },
     u
   );
   await taxesRepo.creer({ nom: 'TVA 19 %', taux: 19, parDefaut: true }, u);

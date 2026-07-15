@@ -20,6 +20,8 @@ export default function EcranClients() {
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
   const [adresse, setAdresse] = useState('');
+  const [nif, setNif] = useState('');
+  const [rc, setRc] = useState('');
 
   const ouvrir = (c?: Client) => {
     setEdite(c ?? null);
@@ -28,12 +30,14 @@ export default function EcranClients() {
     setEmail(c?.email ?? '');
     setTelephone(c?.telephone ?? '');
     setAdresse(c?.adresse ?? '');
+    setNif(c?.nif ?? '');
+    setRc(c?.rc ?? '');
     setModal(true);
   };
 
   const enregistrer = async () => {
     if (!nom.trim()) return;
-    const data = { nom: nom.trim(), type, email: email.trim(), telephone: telephone.trim(), adresse: adresse.trim() };
+    const data = { nom: nom.trim(), type, email: email.trim(), telephone: telephone.trim(), adresse: adresse.trim(), nif: nif.trim(), rc: rc.trim() };
     if (edite) await clientsRepo.modifier(edite.id, data, u);
     else await clientsRepo.creer(data, u);
     setModal(false);
@@ -83,6 +87,10 @@ export default function EcranClients() {
               <TextInput style={styles.champ} value={telephone} onChangeText={setTelephone} keyboardType="phone-pad" />
               <Text style={styles.label}>Adresse</Text>
               <TextInput style={styles.champ} value={adresse} onChangeText={setAdresse} />
+              <Text style={styles.label}>NIF (requis pour la déduction de TVA)</Text>
+              <TextInput style={styles.champ} value={nif} onChangeText={setNif} keyboardType="numeric" />
+              <Text style={styles.label}>RC (registre de commerce)</Text>
+              <TextInput style={styles.champ} value={rc} onChangeText={setRc} />
               <View style={styles.actions}>
                 <Pressable style={[styles.bouton, styles.secondaire]} onPress={() => setModal(false)}>
                   <Text style={styles.secondaireTexte}>Annuler</Text>
